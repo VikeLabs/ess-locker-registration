@@ -61,13 +61,13 @@ routerRoutes.route('/report').put(async (req, res) => {
 routerRoutes.route('/register').put(async (req, res) => {
     const dbConnect = dbo.getDb();
     const matchDoc = {
-        building = req.body.building,
-        number = req.body.number,
+        building: req.body.building,
+        number: req.body.number,
         status: 'available'
     };
     const updateDoc = {
-        user = req.body.user,
-        userEmail = req.body.userEmail,
+        user: req.body.user,
+        userEmail: req.body.userEmail,
         status: 'registered',
         updatedAt: new Date()
     };
