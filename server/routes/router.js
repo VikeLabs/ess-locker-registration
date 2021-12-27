@@ -25,7 +25,6 @@ routerRoutes.route('/search/building/:building/number/:number').get(async (req, 
         .then(result => {
             if (result) {
                 res.json(result);
-                console.log(result);
             } else {
                 res.json({err: "not found"});
             }
@@ -42,7 +41,8 @@ routerRoutes.route('/report').put((req, res) => {
     const filter = {
         building: req.body.building,
         number: parseInt(req.body.number),
-        status: 'registered'
+        status: 'registered',
+        reported: false
     };
     const updateDoc = {
         $set: {
@@ -59,7 +59,6 @@ routerRoutes.route('/report').put((req, res) => {
                 res.json({msg: "success"});
             } else {
                 res.json({err: "not found"});
-                console.log("couldn't find a reportable locker")
             }
         })
         .catch(err => {
@@ -126,9 +125,9 @@ routerRoutes.route('/deregister').put(async (req, res) => {
         .updateOne(filter, updateDoc)
         .then(result => {
             if (result.matchedCount === 1) {
-                res.send("success");
+                res.json({msg: "success"});
             } else {
-                res.send("not found");
+                res.json({err: "not found"});
             }
         })
         .catch(err => {
@@ -142,7 +141,9 @@ routerRoutes.route('/resolve').put(async (req, res) => {
     const dbConnect = dbo.getDb();
     const filter = {
         building: req.body.building,
-        number: parseInt(req.body.number)
+        number: parseInt(req.body.number),
+        status: 'registered',
+        reported: true
     };
     
     const updateDoc = {
@@ -157,9 +158,9 @@ routerRoutes.route('/resolve').put(async (req, res) => {
         .updateOne(filter, updateDoc)
         .then(result => {
             if (result.matchedCount === 1) {
-                res.send("success");
+                res.json({msg: "success"});
             } else {
-                res.send("not found");
+                res.json({err: "not found"});
             }
         })
         .catch(err => {
