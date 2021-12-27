@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title>ESS Locker Registration Backend Tester</title>
+    </head>
+    <body>
+        <button onclick='search("ecs", 100)'>Search Test</button>
+        <div id='search-result'></div>
+
+        <button onclick='report("ecs", 100)'>Report Test</button>
+        <div id='report-result'></div>
+
+        <button onclick='resolve("ecs", 100)'>Resolve Test</button>
+        <div id='resolve-result'></div>
+
+        <button onclick='register("ecs", 100, "Rafael Edora", "rvedora@gmail.com")'>Register Test</button>
+        <div id='register-result'></div>
+
+        <button onclick='deregister("ecs", 100, "Rafael Edora", "rvedora@gmail.com")'>Deregister Test</button>
+        <div id='deregister-result'></div>
+
+        <script src='src/script.js'></script>
+    </body>
+</html>
