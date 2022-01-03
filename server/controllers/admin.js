@@ -1,7 +1,7 @@
-import dbo from "../db/conn.js";
+const dbo = require("../db/conn.js");
 
 module.exports = {
-    resolve = async (req, res) => {
+    resolve: async (req, res) => {
         const dbConnect = dbo.getDb();
         const filter = {
             building: req.body.building,
