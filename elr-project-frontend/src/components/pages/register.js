@@ -86,7 +86,8 @@ class Register extends Component {
       <div className="container">
         <h1 className="display-4" style = {{marginTop:30}}>Register This Locker</h1> <br/>
 
-        The Locker #202 in 
+        The Locker #202 in the ELW is unregisterd. <br/>
+        If you would like to register this locker please fill out the form below.<br/><br/>
 
         <form method="post" onSubmit={this.handleSubmit} style={{ maxWidth: '40%'}}>
           <div className="form-group">
@@ -118,7 +119,7 @@ class Register extends Component {
                   <a href = "http://localhost:3000/thankyou" style={{color: "#000000"}}>
                     Register
                   </a>
-                </button>
+          </button>
         </form>
       </div>
     );
