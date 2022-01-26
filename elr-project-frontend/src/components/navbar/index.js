@@ -17,12 +17,6 @@ const Navbar = () => {
         <NavLink to='/' activeStyle>
             Home
           </NavLink>
-          <NavLink to='/register' activeStyle>
-            Register
-          </NavLink>
-          <NavLink to='/deregister' activeStyle>
-            Deregister
-          </NavLink>
           <NavLink to='/report' activeStyle>
             Report
           </NavLink>

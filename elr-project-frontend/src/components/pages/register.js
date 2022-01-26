@@ -84,7 +84,9 @@ class Register extends Component {
   render() {
     return (
       <div className="container">
-        <h1 className="display-4" style = {{marginTop:30}}>Register a Locker</h1> <br/>
+        <h1 className="display-4" style = {{marginTop:30}}>Register This Locker</h1> <br/>
+
+        The Locker #202 in 
 
         <form method="post" onSubmit={this.handleSubmit} style={{ maxWidth: '40%'}}>
           <div className="form-group">
@@ -104,26 +106,6 @@ class Register extends Component {
               regarding the status of your reservation.
             </small>
           </div>
-
-          <div className="form-group" style={{ maxWidth: '40%' }}>
-            <label htmlFor="buildingDrop">Choose building</label>
-            <select id="buildingDrop" className="form-control" name="buildingValue"
-              value={this.state.lockerValue} onChange={this.handleChange}>
-              {this.state.lockerOpt.map(value => {
-                return <option key={value.number}>{value.number}</option>;
-              })}
-              <option value="" enabled>Choose Building</option>
-              <option value="CSCU" enabled>CSCU</option>
-              <option value="ESS" enabled>ELW</option>
-            </select>
-          </div>
-
-          <div className="form-group" style={{ maxWidth: '40%' }}>
-            <label htmlFor="inputLocker">Enter Locker Number</label>
-            <input type="number" name="lockerValue" id="inputLocker" placeholder="Number"
-              className="form-control" value={this.state.emailValue} onChange={this.handleChange}
-            />
-          </div>
           
           <div>
           <input type="checkbox" id="tos" name="tos"/>
@@ -131,7 +113,12 @@ class Register extends Component {
           reserve the right to cut your lock at any time. We will keep locker contents for a few months. </label>
           </div><br/>
 
-          <input type="submit" className="btn btn-primary" value="Submit" />
+          {/*<input type="submit" className="btn btn-primary" value="Register" />*/}
+          <button className="btn btn-primary">
+                  <a href = "http://localhost:3000/thankyou" style={{color: "#000000"}}>
+                    Register
+                  </a>
+                </button>
         </form>
       </div>
     );

@@ -87,7 +87,10 @@ class Deregister extends Component {
   render() {
     return (
       <div className="container">
-        <h1 className="display-4" style = {{marginTop:30}}>Deregister a Locker</h1> <br/>
+        <h1 className="display-4" style = {{marginTop:30}}>Deregister This Locker</h1> <br/>
+
+        Locker #204 in ELW is already registered. <br/> If this is your locker and you'd like to deregister it, enter your credentials in the form below.
+        <br/><br/>
 
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
@@ -107,27 +110,12 @@ class Deregister extends Component {
               </div>
             </div>
 
-            <div className="form-group" style={{ maxWidth: '20%' }}>
-            <label htmlFor="lockerDrop">Choose building</label>
-            <select id="lockerDrop" className="form-control" name="lockerValue"
-              value={this.state.lockerValue} onChange={this.handleChange}>
-              {this.state.lockerOpt.map(value => {
-                return <option key={value.number}>{value.number}</option>;
-              })}
-              <option value="" enabled>Choose Building</option>
-              <option value="CSCU" enabled>CSCU</option>
-              <option value="ESS" enabled>ELW</option>
-            </select>
-          </div>
-
-          <div className="form-group" style={{ maxWidth: '20%' }}>
-            <label htmlFor="inputLocker">Enter Locker Number</label>
-            <input type="number" name="lockerValue" id="inputLocker" placeholder="Number"
-              className="form-control" value={this.state.emailValue} onChange={this.handleChange}
-            />
-          </div>
-
-            <input type="submit" className="btn btn-primary"value="Submit" />
+            {/*<input type="submit" className="btn btn-primary"value="Deregister" />*/}
+            <button className="btn btn-primary">
+                  <a href = "http://localhost:3000/thankyou" style={{color: "#000000"}}>
+                    Deregister
+                  </a>
+            </button>
           </div>
         </form>
       </div>

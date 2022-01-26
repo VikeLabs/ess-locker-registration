@@ -40,6 +40,7 @@ function App() {
         <Route path='/renew/thankyou' element={<RenewDone/>} />
         <Route exact path='/report' element={<Report/>} />
         <Route exact path='/admin' element={<Admin/>} />
+        <Route exact path='/thankyou' element={<ThankYou/>} />
         <Route element={<Lost/>} />
       </Routes>
       {/*</div>*/}
