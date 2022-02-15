@@ -2,4 +2,4 @@
 This is our ess locker registration source code repository.
 
 Current state:
-!(https://github.com/VikeLabs/ess-locker-registration/blob/main/elrhome_updated.png)
+![Home Page](https://github.com/VikeLabs/ess-locker-registration/blob/main/elrhome_updated.png?raw=true)
