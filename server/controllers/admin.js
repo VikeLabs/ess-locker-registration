@@ -3,7 +3,7 @@ const converter = require("json2csv");
 const fs = require("fs");
 
 module.exports = {
-    resolve: async (req, res) => {
+    resolve: async (req, res, next) => {
         const dbConnect = dbo.getDb();
         const filter = {
             building: req.body.building,
@@ -26,16 +26,19 @@ module.exports = {
                 if (result.matchedCount === 1) {
                     res.json({msg: "success"});
                 } else {
-                    res.json({err: "not found"});
+                    res.json({err: "reported locker not found"});
                 }
             })
             .catch(err => next(err));
     },
     getRegisteredLockers: async (req, res, next)=> {
         const dbConnect = dbo.getDb();
+        const filter = {
+            status: "registered"
+        };
         
         const registeredLockers = await dbConnect.collection('lockers')
-            .find()
+            .find(filter)
             .toArray()
             .catch(err => next(err));
 
@@ -44,5 +47,18 @@ module.exports = {
 
             res.download('../files/regiesteredLockers.csv');
         }).catch(err => next(err));
+    },
+    getAvailableCount: async (req, res, next) => {
+        const dbConnect = dbo.getDb();
+        const filter = {
+            status: "available"
+        };
+
+        const count = await dbConnect.collection('lockers')
+            .find(filter)
+            .count()
+            .catch(err => next(err));
+
+        res.json({availableCount: count});
     }
 };
