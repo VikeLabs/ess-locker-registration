@@ -1,7 +1,7 @@
 const dbo = require("../db/conn.js");
 
 module.exports = {
-    search: async (req, res) => {
+    search: async (req, res, next) => {
         const dbConnect = dbo.getDb();
         const filter = {
             building: req.params.building,
@@ -31,7 +31,7 @@ module.exports = {
             .catch(err => next(err));
     },
 
-    report: async (req, res) => {
+    report: async (req, res, next) => {
         const dbConnect = dbo.getDb();
         const filter = {
             building: req.body.building,
@@ -59,7 +59,7 @@ module.exports = {
             .catch(err => next(err));
     },
 
-    register: async (req, res) => {
+    register: async (req, res, next) => {
         const dbConnect = dbo.getDb();
         const filter = {
             building: req.body.building,
@@ -88,7 +88,7 @@ module.exports = {
             .catch(err => next(err));
     },
 
-    deregister: async (req, res) => {
+    deregister: async (req, res, next) => {
         const dbConnect = dbo.getDb();
         const filter = {
             building: req.body.building,
