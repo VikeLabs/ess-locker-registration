@@ -28,10 +28,7 @@ module.exports = {
                     res.json({err: "not found"});
                 }
             })
-            .catch(err => {
-                res.status(400).send('Error finding locker');
-                console.log(err);
-            });
+            .catch(err => next(err));
     },
 
     report: async (req, res) => {
@@ -59,10 +56,7 @@ module.exports = {
                     res.json({err: "not found"});
                 }
             })
-            .catch(err => {
-                res.status(400).send('Error reporting locker');
-                console.log(err);
-            });
+            .catch(err => next(err));
     },
 
     register: async (req, res) => {
@@ -91,10 +85,7 @@ module.exports = {
                     res.json({err: "not found"});
                 }
             })
-            .catch(err => {
-                res.status(400).send('Error registering locker');
-                console.log(err);
-            });
+            .catch(err => next(err));
     },
 
     deregister: async (req, res) => {
@@ -126,9 +117,6 @@ module.exports = {
                     res.json({err: "not found"});
                 }
             })
-            .catch(err => {
-                res.status(400).send('Error registering locker');
-                console.log(err);
-            });
+            .catch(err => next(err));
     }
 };

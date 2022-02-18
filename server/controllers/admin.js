@@ -29,26 +29,20 @@ module.exports = {
                     res.json({err: "not found"});
                 }
             })
-            .catch(err => {
-                res.status(400).send('Error resolving locker');
-                console.log(err);
-            });
+            .catch(err => next(err));
     },
-    getRegisteredLockers: async (req, res)=> {
+    getRegisteredLockers: async (req, res, next)=> {
         const dbConnect = dbo.getDb();
         
         const registeredLockers = await dbConnect.collection('lockers')
             .find()
-            .toArray();
+            .toArray()
+            .catch(err => next(err));
 
         converter.json2csvAsync(registeredLockers).then(csv => {
             fs.writeFileSync('../files/registeredLockers.csv', csv);
 
             res.download('../files/regiesteredLockers.csv');
-        }).catch(err => {
-            console.log(err);
-
-            res.json({err: "There was a problem"});
-        })
+        }).catch(err => next(err));
     }
 };
