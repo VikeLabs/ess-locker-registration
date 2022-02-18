@@ -22,4 +22,7 @@ routerRoutes.route('/deregister').put(userController.deregister);
 // request body has building and number
 routerRoutes.route('/resolve').put(adminController.resolve);
 
+// request body has nothing
+routerRoutes.route('/getRegisterLockers').get(adminController.getRegisteredLockers);
+
 module.exports = routerRoutes;

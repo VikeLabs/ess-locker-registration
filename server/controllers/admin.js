@@ -1,4 +1,6 @@
 const dbo = require("../db/conn.js");
+const converter = require("json2csv");
+const fs = require("fs");
 
 module.exports = {
     resolve: async (req, res) => {
@@ -31,5 +33,22 @@ module.exports = {
                 res.status(400).send('Error resolving locker');
                 console.log(err);
             });
+    },
+    getRegisteredLockers: async (req, res)=> {
+        const dbConnect = dbo.getDb();
+        
+        const registeredLockers = await dbConnect.collection('lockers')
+            .find()
+            .toArray();
+
+        converter.json2csvAsync(registeredLockers).then(csv => {
+            fs.writeFileSync('../files/registeredLockers.csv', csv);
+
+            res.download('../files/regiesteredLockers.csv');
+        }).catch(err => {
+            console.log(err);
+
+            res.json({err: "There was a problem"});
+        })
     }
 };
