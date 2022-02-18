@@ -20,7 +20,7 @@ app.use((err, req, res, next) => {
 });
 
 // perform a database connection when the server starts
-dbo.connectToServer(function (err) {
+dbo.connectToServer((err) => {
   if (err) {
     console.error(err);
     process.exit();
