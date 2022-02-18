@@ -21,7 +21,5 @@ module.exports = {
     });
   },
 
-  getDb: function () {
-    return dbConnection;
-  },
+  getDb: () => dbConnection,
 };
