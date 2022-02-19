@@ -14,7 +14,7 @@ export function connectToServer(callback) {
       return callback(err);
     }
 
-    dbConnection = db.db("lockerdb");
+    dbConnection = db.db("lockers");
     console.log("Successfully connected to MongoDB.");
 
     return callback();

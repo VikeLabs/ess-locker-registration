@@ -23,6 +23,6 @@ routerRoutes.route('/deregister').put(deregister);
 routerRoutes.route('/resolve').put(resolve);
 
 // request body has nothing
-routerRoutes.route('/getRegisterLockers').get(getRegisteredLockers);
+routerRoutes.route('/getRegisteredLockers').get(getRegisteredLockers);
 
 export default routerRoutes;
