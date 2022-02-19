@@ -3,13 +3,13 @@ import './loadEnv.js';
 
 import express, { json } from 'express';
 import cors from 'cors';
+import router from './routes/router.js';
+
 // get MongoDB driver connection
 import { connectToServer } from './db/conn.js';
 
 const PORT = process.env.PORT || 5000;
 const app = express();
-
-import router from './routes/router.js';
 
 app.use(cors());
 app.use(json());
