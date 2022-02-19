@@ -1,28 +1,28 @@
-const express = require('express');
-const routerRoutes = express.Router();
-const userController = require("../controllers/user.js");
-const adminController = require("../controllers/admin.js");
+import { Router } from 'express';
+const routerRoutes = Router();
+import { search, report, register, deregister } from "../controllers/user.js";
+import { resolve, getRegisteredLockers } from "../controllers/admin.js";
 
 // user routes
 
 // request body has building and number
-routerRoutes.route('/search/building/:building/number/:number').get(userController.search);
+routerRoutes.route('/search/building/:building/number/:number').get(search);
 
 // request body has building and number
-routerRoutes.route('/report').put(userController.report);
+routerRoutes.route('/report').put(report);
 
 // request body has building, number, user, userEmail
-routerRoutes.route('/register').put(userController.register);
+routerRoutes.route('/register').put(register);
 
 // request body has building, number, user, userEmail
-routerRoutes.route('/deregister').put(userController.deregister);
+routerRoutes.route('/deregister').put(deregister);
 
 // admin routes
 
 // request body has building and number
-routerRoutes.route('/resolve').put(adminController.resolve);
+routerRoutes.route('/resolve').put(resolve);
 
 // request body has nothing
-routerRoutes.route('/getRegisterLockers').get(adminController.getRegisteredLockers);
+routerRoutes.route('/getRegisterLockers').get(getRegisteredLockers);
 
-module.exports = routerRoutes;
+export default routerRoutes;
