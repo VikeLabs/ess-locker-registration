@@ -1,17 +1,19 @@
-// Loads the configuration from config.env to process.env
-require('dotenv').config({ path: './config.env' });
+// get environment variables into process.env
+import './loadEnv.js';
 
 import express, { json } from 'express';
 import cors from 'cors';
 // get MongoDB driver connection
-import { connectToServer } from './db/conn';
+import { connectToServer } from './db/conn.js';
 
 const PORT = process.env.PORT || 5000;
 const app = express();
 
+import router from './routes/router.js';
+
 app.use(cors());
 app.use(json());
-app.use(require('./routes/router').default);
+app.use(router);
 
 // Global error handling
 app.use((err, req, res, next) => {

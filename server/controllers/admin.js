@@ -1,5 +1,6 @@
 import { getDb } from "../db/conn.js";
-import { json2csvAsync } from "json2csv";
+import pkg from "json2csv";
+const { json2csvAsync } = pkg;
 import { writeFileSync } from "fs";
 
 export async function resolve(req, res, next) {
