@@ -1,7 +1,9 @@
-import { dbConnect } from "../db/conn.js";
+import { getDb } from "../db/conn.js";
 
 // search db for locker with given building and number
 export async function search(req, res, next) {
+    // set up query
+    const dbConnect = getDb();
 
     // filter
     const filter = {
@@ -36,6 +38,8 @@ export async function search(req, res, next) {
 
 // report a locker with the given building and number
 export async function report(req, res, next) {
+    // set up db update
+    const dbConnect = getDb();
 
     // filter out available lockers and reported lockers
     const filter = {
@@ -69,6 +73,8 @@ export async function report(req, res, next) {
 
 // register the locker with the given building and number
 export async function register(req, res, next) {
+    // set up update
+    const dbConnect = getDb();
 
     // filter registered lockers
     const filter = {
@@ -103,6 +109,8 @@ export async function register(req, res, next) {
 
 // deregister a locker given its building, number, and user/email
 export async function deregister(req, res, next) {
+    // get database connection
+    const dbConnect = getDb();
 
     // ensure that the credentials match
     const filter = {

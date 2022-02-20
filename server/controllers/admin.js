@@ -1,4 +1,4 @@
-import { dbConnect } from "../db/conn.js";
+import { getDb } from "../db/conn.js";
 import { parseAsync } from "json2csv";
 import { writeFile } from "fs";
 import { promisify } from "util";
@@ -8,6 +8,7 @@ const writeFileProm = promisify(writeFile);
 // unreports a locker, given its building and number
 export async function resolve(req, res, next) {
     // set up update options
+    const dbConnect = getDb();
     const filter = {
         building: req.body.building,
         number: parseInt(req.body.number),
@@ -39,6 +40,7 @@ export async function resolve(req, res, next) {
 // download csv of all registered lockers
 export async function downloadRegisteredLockers(req, res, next) {
     // set up query
+    const dbConnect = getDb();
     const filter = {
         status: 'registered'
     };
@@ -72,7 +74,7 @@ export async function downloadRegisteredLockers(req, res, next) {
     const fileName = './files/registered_lockers.csv';
 
     await writeFileProm(fileName, csv)
-        .catch(err => next(err));
+        .catch();
 
     // send file to client and prompt download
     res.download(fileName);
@@ -81,6 +83,7 @@ export async function downloadRegisteredLockers(req, res, next) {
 // counts the number of available lockers
 export async function getAvailableCount(req, res, next) {
     // set up query
+    const dbConnect = getDb();
     const filter = {
         status: "available"
     };
