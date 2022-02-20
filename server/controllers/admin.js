@@ -1,6 +1,9 @@
 import { getDb } from "../db/conn.js";
 import { parseAsync } from "json2csv";
 import { writeFile } from "fs";
+import { promisify } from "util";
+
+const writeFileProm = util.promisify(writeFile);
 
 // unreports a locker, given its building and number
 export async function resolve(req, res, next) {
@@ -70,14 +73,11 @@ export async function downloadRegisteredLockers(req, res, next) {
     // write csv to file
     const fileName = './files/registered_lockers.csv';
 
-    writeFile(fileName, csv, err => {
-        if (err) {
-            next(err);
-        }
+    await writeFileProm(fileName, csv)
+        .catch(err => next(err));
 
-        // send file to client and prompt download
-        res.download(fileName);
-    });
+    // send file to client and prompt download
+    res.download(fileName);
 }
 
 // counts the number of available lockers
