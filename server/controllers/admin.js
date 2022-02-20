@@ -2,6 +2,26 @@ import { getDb } from "../db/conn.js";
 import { parseAsync } from "json2csv";
 import { writeFile } from "fs";
 
+async function jsonToCSVFile (data, fileName) {
+    const fields = Object.keys(data[0]);
+    const opts = { fields };
+    let success = true;
+
+    return new Promise((resolve, reject) => {
+        parseAsync(data, opts)
+            .then(async csv => {
+                writeFile(fileName, csv, err => {
+                    if (!err) {
+                        resolve()
+                    } else {
+                        reject(err);
+                    }
+                });
+            })
+            .catch(err => reject(err));
+    })
+}
+
 export async function resolve(req, res, next) {
     const dbConnect = getDb();
     const filter = {
@@ -30,7 +50,8 @@ export async function resolve(req, res, next) {
         })
         .catch(err => next(err));
 }
-export async function getRegisteredLockers(req, res, next) {
+
+export async function downloadRegisteredLockers(req, res, next) {
     const dbConnect = getDb();
     const filter = {
         status: 'registered'
@@ -51,26 +72,23 @@ export async function getRegisteredLockers(req, res, next) {
     const registeredLockers = await dbConnect.collection('lockers')
         .find(filter, options)
         .toArray()
-        .then(registeredLockers => {
+        .catch(err => next(err));
 
-            const fields = ['building', 'number', 'user', 'user email', 'status', 'reported'];
-            const opts = { fields };
+    const fields = Object.keys(registeredLockers[0]);
+    const opts = { fields };
 
-            console.log(registeredLockers);
-            
-            parseAsync(registeredLockers, opts)
-                .then(csv => {
-                    writeFile('./files/registered_lockers.csv', csv, { flag: "w+" }, err => {
-                        if (err) {
-                            next(err);
-                        }
-        
-                        res.download('./files/registered_lockers.csv');
-                    });
-                })
-                .catch(err => next(err));
-        })
-        .catch(err => next(err));    
+    const csv = await parseAsync(registeredLockers, opts)
+        .catch(err => next(err));
+    
+    const fileName = './files/registered_lockers.csv';
+
+    writeFile(fileName, csv, err => {
+        if (err) {
+            next(err);
+        }
+
+        res.download(fileName);
+    });
 }
 export async function getAvailableCount(req, res, next) {
     const dbConnect = getDb();
