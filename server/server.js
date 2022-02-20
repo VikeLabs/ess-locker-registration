@@ -1,5 +1,5 @@
 // get environment variables into process.env
-import './loadEnv.js';
+import './util/loadEnv.js';
 
 // load middlewares
 import express, { json } from 'express';
