@@ -2,27 +2,9 @@ import { getDb } from "../db/conn.js";
 import { parseAsync } from "json2csv";
 import { writeFile } from "fs";
 
-async function jsonToCSVFile (data, fileName) {
-    const fields = Object.keys(data[0]);
-    const opts = { fields };
-    let success = true;
-
-    return new Promise((resolve, reject) => {
-        parseAsync(data, opts)
-            .then(async csv => {
-                writeFile(fileName, csv, err => {
-                    if (!err) {
-                        resolve()
-                    } else {
-                        reject(err);
-                    }
-                });
-            })
-            .catch(err => reject(err));
-    })
-}
-
+// unreports a locker, given its building and number
 export async function resolve(req, res, next) {
+    // set up update options
     const dbConnect = getDb();
     const filter = {
         building: req.body.building,
@@ -38,20 +20,23 @@ export async function resolve(req, res, next) {
         }
     };
 
-    dbConnect
+    // unreport locker
+    const result = await dbConnect
         .collection('lockers')
         .updateOne(filter, updateDoc)
-        .then(result => {
-            if (result.matchedCount === 1) {
-                res.json({ msg: "success" });
-            } else {
-                res.json({ err: "reported locker not found" });
-            }
-        })
         .catch(err => next(err));
+
+    // send response
+    if (result.matchedCount === 1) {
+        res.json({ msg: "success" });
+    } else {
+        res.json({ err: "reported locker not found" });
+    }
 }
 
+// download csv of all registered lockers
 export async function downloadRegisteredLockers(req, res, next) {
+    // set up query
     const dbConnect = getDb();
     const filter = {
         status: 'registered'
@@ -64,22 +49,25 @@ export async function downloadRegisteredLockers(req, res, next) {
             number: 1,
             user: 1,
             userEmail: 1,
-            status: 1,
             reported: 1
         }
     };
 
-    const registeredLockers = await dbConnect.collection('lockers')
+    // get all registered lockers as an array of docs
+    const registeredLockers = await dbConnect
+        .collection('lockers')
         .find(filter, options)
         .toArray()
         .catch(err => next(err));
 
+    // convert doc array to csv
     const fields = Object.keys(registeredLockers[0]);
     const opts = { fields };
 
     const csv = await parseAsync(registeredLockers, opts)
         .catch(err => next(err));
     
+    // write csv to file
     const fileName = './files/registered_lockers.csv';
 
     writeFile(fileName, csv, err => {
@@ -87,19 +75,26 @@ export async function downloadRegisteredLockers(req, res, next) {
             next(err);
         }
 
+        // send file to client and prompt download
         res.download(fileName);
     });
 }
+
+// counts the number of available lockers
 export async function getAvailableCount(req, res, next) {
+    // set up query
     const dbConnect = getDb();
     const filter = {
         status: "available"
     };
 
-    const count = await dbConnect.collection('lockers')
+    // count available lockers
+    const count = await dbConnect
+        .collection('lockers')
         .find(filter)
         .count()
         .catch(err => next(err));
 
+    // send count to user
     res.json({ availableCount: count });
 }

@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 
+// grab connection string from environment
 const connectionString = process.env.ATLAS_URI;
 const client = new MongoClient(connectionString, {
   useNewUrlParser: true,
@@ -8,16 +9,20 @@ const client = new MongoClient(connectionString, {
 
 let dbConnection;
 
-export function connectToServer(callback) {
-  client.connect((err, db) => {
-    if (err || !db) {
-      return callback(err);
-    }
+// connect to server
+export function connectToServer() {
+  return new Promise(async (resolve, reject) => {
 
+    // connect to database
+    const db = await client.connect()
+      .catch(err => reject(err));
+
+    // confirm connection
     dbConnection = db.db("lockers");
     console.log("Successfully connected to MongoDB.");
-
-    return callback();
+    resolve();
   });
 }
+
+// get connection
 export function getDb() { return dbConnection; }
