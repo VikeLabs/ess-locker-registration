@@ -25,4 +25,4 @@ export function connectToServer() {
 }
 
 // get connection
-export function getDb() { return dbConnection; }
+export const dbConnect = dbConnection;
