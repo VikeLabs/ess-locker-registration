@@ -68,6 +68,6 @@ async function deregister(building, number, user, userEmail) {
 async function count() {
     get(`http://localhost:5000/count/`)
     .then(result => {
-        countResult.innerHTML = "total: " + result.totalCount + ", available: " + result.availableCount + ", registered: " + result.registeredCount;
+        countResult.innerHTML = `total: ${result.totalCount}, available: ${result.availableCount}, registered: ${result.registeredCount}`;
     });
 }
