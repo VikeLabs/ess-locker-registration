@@ -107,12 +107,12 @@ export async function count(req, res, next) {
         .collection('lockers')
         .countDocuments();
 
+    // send count to user
+
     const data = {
         availableCount: availableCount,
         registeredCount: registeredCount,
         totalCount: totalCount
     };
-
-    // send count to user
     res.json(data);
 }
