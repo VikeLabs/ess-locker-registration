@@ -23,7 +23,7 @@ routerRoutes.route('/deregister').put(deregister);
 routerRoutes.route('/resolve').put(resolve);
 
 // request body has nothing
-routerRoutes.route('/download-available-lockers').get(downloadRegisteredLockers);
+routerRoutes.route('/download-registered-lockers').get(downloadRegisteredLockers);
 
 // request body has nothing
 routerRoutes.route('/count').get(count);
