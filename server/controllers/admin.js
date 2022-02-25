@@ -80,21 +80,39 @@ export async function downloadRegisteredLockers(req, res, next) {
     res.download(fileName);
 }
 
-// counts the number of available lockers
-export async function getAvailableCount(req, res, next) {
+// counts the number of total, available, and registered lockers
+export async function count(req, res, next) {
     // set up query
     const dbConnect = getDb();
-    const filter = {
+    const availableFilter = {
         status: "available"
     };
 
-    // count available lockers
-    const count = await dbConnect
+    const registeredFilter = {
+        status: "registered"
+    };
+
+    // count lockers
+    const availableCount = await dbConnect
         .collection('lockers')
-        .find(filter)
-        .count()
-        .catch(err => next(err));
+        .countDocuments(availableFilter);
+
+        
+    const registeredCount = await dbConnect
+        .collection('lockers')
+        .countDocuments(registeredFilter);
+
+            
+    const totalCount = await dbConnect
+        .collection('lockers')
+        .countDocuments();
+
+    const data = {
+        availableCount: availableCount,
+        registeredCount: registeredCount,
+        totalCount: totalCount
+    };
 
     // send count to user
-    res.json({ availableCount: count });
+    res.json(data);
 }

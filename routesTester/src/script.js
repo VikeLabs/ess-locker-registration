@@ -3,6 +3,7 @@ const searchResult = document.getElementById('search-result');
 const registerResult = document.getElementById('register-result');
 const deregisterResult = document.getElementById('deregister-result');
 const resolveResult = document.getElementById('resolve-result');
+const countResult = document.getElementById('count-result');
 
 async function put(uri = '', data = {}) {
     const response = await fetch(uri, {
@@ -61,5 +62,12 @@ async function deregister(building, number, user, userEmail) {
     put(`http://localhost:5000/deregister/`, data)
     .then(result => {
         deregisterResult.innerHTML = (result.msg) ? result.msg : result.err;
+    });
+}
+
+async function count() {
+    get(`http://localhost:5000/count/`)
+    .then(result => {
+        countResult.innerHTML = "total: " + result.totalCount + ", available: " + result.availableCount + ", registered: " + result.registeredCount;
     });
 }

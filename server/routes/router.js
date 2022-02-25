@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const routerRoutes = Router();
 import { search, report, register, deregister } from "../controllers/user.js";
-import { resolve, downloadRegisteredLockers } from "../controllers/admin.js";
+import { resolve, downloadRegisteredLockers, count } from "../controllers/admin.js";
 
 // user routes
 
@@ -23,6 +23,9 @@ routerRoutes.route('/deregister').put(deregister);
 routerRoutes.route('/resolve').put(resolve);
 
 // request body has nothing
-routerRoutes.route('/downloadRegisteredLockers').get(downloadRegisteredLockers);
+routerRoutes.route('/download-available-lockers').get(downloadRegisteredLockers);
+
+// request body has nothing
+routerRoutes.route('/count').get(count);
 
 export default routerRoutes;
