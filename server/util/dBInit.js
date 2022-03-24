@@ -1,10 +1,11 @@
 // Loads the configuration from config.env to process.env
-import dotenv from 
+import './loadEnv.js'
 
 import express from 'express'
 import cors from 'cors'
 
-const dbo = require("../db/conn.js");
+import { connectToServer, getDb } from '../db/conn.js'
+
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -19,13 +20,12 @@ res.status(500).send('Something broke!');
 });
 
 // perform a database connection when the server starts
-dbo.connectToServer((err) => {
-    if (err) {
-        console.error(err);
-        process.exit();
-    }
 
+console.log('Stop A')
+connectToServer().then(()=>{
     let lockers = [];
+    let lockerDoc ={}
+    let TermsDoc ={}
 
     const lockerNumbers = [
         {building: 'elw', number: 100},
@@ -59,18 +59,19 @@ dbo.connectToServer((err) => {
   
   lockerNumbers.forEach((locker) => addLocker(locker.building, locker.number));
   
-  const dbConnect = dbo.getDb();
   
-//   dbConnect.collection('lockers').insertMany(lockers)
-//       .then(result => {
-//           if (result.acknowledged) {
-//               console.log(`successfully inserted ${result.insertedCount} items`);
-//           } else {
-//               console.log(`write not acknowledged`);
-//           }
-//       }).catch(err => {
-//           console.log(err);
-//       });
+  const dbConnect = getDb();
+  
+  dbConnect.collection('lockers').insertMany(lockers)
+      .then(result => {
+          if (result.acknowledged) {
+              console.log(`successfully inserted ${result.insertedCount} items`);
+          } else {
+              console.log(`write not acknowledged`);
+          }
+      }).catch(err => {
+          console.log(err);
+      });
 
     let Terms =[]
     const details = [
@@ -79,7 +80,7 @@ dbo.connectToServer((err) => {
 
     ]
 
-    add_to_TandC = (message)=>{
+    function add_to_TandC (message){
         TermsDoc = {
             "message":message,
             updatedAt: new Date(),
@@ -90,9 +91,26 @@ dbo.connectToServer((err) => {
     }
 
     details.forEach((TandC)=>add_to_TandC(TandC.message))
+    console.log('Stop D')
 
     console.log(Terms)
 
-    //dbConnect.collection('T & C').insertMany()
+    dbConnect.collection('T & C').insertMany(Terms)
+    .then((result)=>{
+        if(result){
+            console.log('successfully inserted ' + result.insertedCount + ' items')
+        }else{
+            console.log('Unable to insert items')
+        }
+    }).catch((err)=>{
+        console.log(err)
+    })
 
-});
+
+    }).catch((err) => {
+    if (err) {
+        console.error(err);
+        process.exit();
+    }
+    console.log('Stop B')
+    })
