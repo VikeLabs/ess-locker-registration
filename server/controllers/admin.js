@@ -64,7 +64,7 @@ export async function downloadRegisteredLockers(req, res, next) {
         .catch(err => next(err));
 
     // convert doc array to csv
-    const fields = Object.keys(registeredLockers[0]);
+    const fields = (registeredLockers.length > 0) ? Object.keys(registeredLockers[0]) : [];
     const opts = { fields };
 
     const csv = await parseAsync(registeredLockers, opts)
