@@ -6,32 +6,14 @@ import express, { json } from 'express';
 import cors from 'cors';
 import router from './routes/router.js';
 
-import authRouter from './auth.js'
-
 // get MongoDB driver connection
 import { connectToServer } from './db/conn.js';
 
 const PORT = process.env.PORT || 8000;
 const app = express();
 
-// app config
-
-passport.use(strategy);
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.serializeUser((user, done) => done(null, user));
-
-passport.deserializeUser((user, done) => done(null, user));
-
-app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.isAuthenticated();
-  next();
-});
-
 // middlewares
 app.use(cors());
-app.use("/", authRouter);
 app.use(json());
 app.use(router);
 
