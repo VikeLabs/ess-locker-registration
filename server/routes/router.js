@@ -24,17 +24,6 @@ routerRoutes.route('/deregister').put(deregister);
 
 // admin routes
 
-// security middleware
-const isAuthenticated = (req, res, next) => {
-    if (req.user) {
-        console.log('logged in');
-        return next();
-    }
-
-    console.log(req.headers);
-    res.redirect('/login');
-}
-
 // request body has building and number
 routerRoutes.route('/resolve').put(isAuthenticated, resolve);
 
