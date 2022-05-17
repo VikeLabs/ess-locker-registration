@@ -8,13 +8,14 @@ const countResult = document.getElementById('count-result');
 async function put(uri = '', data = {}) {
     const response = await fetch(uri, {
         method: 'PUT',
-        mode: 'cors',
         headers: {
-            'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
         },
-        redirect: 'follow',
-        body: JSON.stringify(data)  
+        body: JSON.stringify(data) 
     });
+    if (response.status === 403) {
+        return {err: 'forbidden'};
+    }
     return response.json();
 }
 
@@ -25,7 +26,7 @@ async function get(uri = '') {
 
 async function report(building, number) {
     const data = {"building": building, "number": number};
-    put(`http://localhost:5000/report/`, data)
+    put(`http://localhost:8000/report/`, data)
     .then(result => {
         reportResult.innerHTML = (result.msg) ? result.msg : result.err;
     });
@@ -33,14 +34,14 @@ async function report(building, number) {
 
 async function resolve(building, number) {
     const data = {"building": building, "number": number};
-    put(`http://localhost:5000/resolve/`, data)
+    put(`http://localhost:8000/resolve/`, data)
     .then(result => {
         resolveResult.innerHTML = (result.msg) ? result.msg : result.err;
     });
 }
 
 async function search(building, number) {
-    get(`http://localhost:5000/search/building/${building}/number/${number}`)
+    get(`http://localhost:8000/search/building/${building}/number/${number}`)
     .then(locker => {
         console.log(locker);
         searchResult.innerHTML = `Building: ${locker.building}, number: ${locker.number}`;
@@ -51,7 +52,7 @@ async function search(building, number) {
 
 async function register(building, number, user, userEmail) {
     const data = {'building': building, 'number': number, 'user': user, 'userEmail': userEmail};
-    put(`http://localhost:5000/register/`, data)
+    put(`http://localhost:8000/register/`, data)
     .then(result => {
         registerResult.innerHTML = (result.msg) ? result.msg : result.err;
     });
@@ -59,14 +60,14 @@ async function register(building, number, user, userEmail) {
 
 async function deregister(building, number, user, userEmail) {
     const data = {'building': building, 'number': number, 'user': user, 'userEmail': userEmail};
-    put(`http://localhost:5000/deregister/`, data)
+    put(`http://localhost:8000/deregister/`, data)
     .then(result => {
         deregisterResult.innerHTML = (result.msg) ? result.msg : result.err;
     });
 }
 
 async function count() {
-    get(`http://localhost:5000/count/`)
+    get(`http://localhost:8000/count/`)
     .then(result => {
         countResult.innerHTML = `total: ${result.totalCount}, available: ${result.availableCount}, registered: ${result.registeredCount}`;
     });
