@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import {useEffect} from "react";
+import ReactDOM from "react-dom";
+const registerResult = document.getElementById('register-result'); //for testing reg
 
 class Register extends Component {
   constructor(props) {
@@ -14,9 +17,44 @@ class Register extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+
+  //added to test
+  // componentDidMount(){
+  //   fetch(`https://api.coinmarketcap.com/v1/ticker/?limit=10`)
+  //   .then(res => res.json())
+  //   .then(json => this.setState({ data: json }));
+  // }
+
+  //registration functions
+  // async function put(uri = '', data = {}) {
+  //   const response = await fetch(uri, {
+  //       method: 'PUT',
+  //       mode: 'cors',
+  //       headers: {
+  //           'Content-Type': 'application/json'
+  //       },
+  //       redirect: 'follow',
+  //       body: JSON.stringify(data)  
+  //   });
+  //   return response.json();
+  // }
+
+//<button onclick='register("ecs", 100, "Rafael Edora", "rvedora@gmail.com")'>Register Test</button>
+//<div id='register-result'></div>
+
+//end of reg funcs
+
+// register(building, number, user, userEmail) {
+//   const data = {'building': building, 'number': number, 'user': user, 'userEmail': userEmail};
+//   put(`http://localhost:5000/register/`, data)
+//   .then(result => {
+//       registerResult.innerHTML = (result.msg) ? result.msg : result.err;
+//   });
+// }
+
   getLockerOpts() {
     // Fetch the available locker numbers from the API
-    fetch('/lockersapi/available', {
+    fetch('lockersapi/new', {
       method: 'get',
       mode: 'same-origin',
       headers: {
@@ -52,7 +90,7 @@ class Register extends Component {
 
   handleSubmit(event) {
     // Send a request to the API to create a new locker
-    fetch('/lockersapi/new', {
+    fetch('lockersapi/new', {
       method: 'post',
       mode: 'same-origin',
       headers: {
@@ -114,12 +152,16 @@ class Register extends Component {
           reserve the right to cut your lock at any time. We will keep locker contents for a few months. </label>
           </div><br/>
 
+          <button onclick='register("ecs", 100, "Rafael Edora", "rvedora@gmail.com")'>Register Test</button>
+          <div id='register-result'></div>
+          <script src='src/script.js'></script>
+
           {/*<input type="submit" className="btn btn-primary" value="Register" />*/}
-          <button className="btn btn-primary">
+          {/* <button className="btn btn-primary">
                   <a href = "http://localhost:3000/thankyou" style={{color: "#000000"}}>
                     Register
                   </a>
-          </button>
+          </button> */}
         </form>
       </div>
     );
@@ -127,3 +169,4 @@ class Register extends Component {
 }
 
 export default Register;
+
