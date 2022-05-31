@@ -2,6 +2,8 @@ import { Router } from 'express';
 const routerRoutes = Router();
 import { search, report, register, deregister } from "../controllers/user.js";
 import { resolve, downloadRegisteredLockers, count } from "../controllers/admin.js";
+import pkg from 'express-openid-connect';
+const { requiresAuth } = pkg;
 
 // user routes
 
@@ -24,24 +26,13 @@ routerRoutes.route('/deregister').put(deregister);
 
 // admin routes
 
-// security middleware
-const isAuthenticated = (req, res, next) => {
-    if (req.user) {
-        console.log('logged in');
-        return next();
-    }
-
-    console.log(req.headers);
-    res.redirect('/login');
-}
-
 // request body has building and number
-routerRoutes.route('/resolve').put(isAuthenticated, resolve);
+routerRoutes.route('/resolve').put(requiresAuth(), resolve);
 
 // request body has nothing
-routerRoutes.route('/download-registered-lockers').get(isAuthenticated, downloadRegisteredLockers);
+routerRoutes.route('/download-registered-lockers').get(requiresAuth(), downloadRegisteredLockers);
 
 // request body has nothing
-routerRoutes.route('/count').get(isAuthenticated, count);
+routerRoutes.route('/count').get(requiresAuth(), count);
 
 export default routerRoutes;
