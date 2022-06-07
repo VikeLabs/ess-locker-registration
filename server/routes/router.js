@@ -13,26 +13,26 @@ routerRoutes.route('/').get((req, res) => {
 })
 
 // request body has building and number
-routerRoutes.route('/search/building/:building/number/:number').get(search);
+routerRoutes.route('/api/search/building/:building/number/:number').get(search);
 
 // request body has building and number
-routerRoutes.route('/report').put(report);
+routerRoutes.route('/api/report').put(report);
 
 // request body has building, number, user, userEmail
-routerRoutes.route('/register').put(register);
+routerRoutes.route('/api/register').put(register);
 
 // request body has building, number, user, userEmail
-routerRoutes.route('/deregister').put(deregister);
+routerRoutes.route('/api/deregister').put(deregister);
 
 // admin routes
 
 // request body has building and number
-routerRoutes.route('/resolve').put(requiresAuth(), resolve);
+routerRoutes.route('/api/resolve').put(requiresAuth(), resolve);
 
 // request body has nothing
-routerRoutes.route('/download-registered-lockers').get(requiresAuth(), downloadRegisteredLockers);
+routerRoutes.route('/api/download-registered-lockers').get(requiresAuth(), downloadRegisteredLockers);
 
 // request body has nothing
-routerRoutes.route('/count').get(requiresAuth(), count);
+routerRoutes.route('/api/count').get(requiresAuth(), count);
 
 export default routerRoutes;
