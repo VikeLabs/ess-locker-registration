@@ -116,3 +116,157 @@ export async function count(req, res, next) {
     };
     res.json(data);
 }
+
+// Deregisters a specific locker 
+export async function admin_deregister(req, res, next) {
+    //connect to database
+    const dbConnect = dbo.getDb();
+
+    // filters all lockers using the building and number
+    const filter = {
+        building: req.body.building,
+        number: parseInt(req.body.number)
+    };
+
+    //sets the fields that will be updated
+    const updateDoc = {
+        $set: {
+            user: '',
+            userEmail: '',
+            status: 'available',
+            reported: false,
+            updatedAt: new Date()
+        }
+    };
+
+    // deregisters the lockers
+    const result = await dbConnect
+        .collection('lockers')
+        .updateOne(filter, updateDoc)
+        .catch(err => {next(err)});
+
+
+    if (result.matchedCount === 1){
+        res.json({msg: 'Sucessfully deregistered locker'})
+    }else{
+        res.json({err:'Could not find locker'})
+    }
+    
+}
+
+// Deregisters all lockers
+export async function deregister_all(req, res, next) {
+    //connect to database
+    const dbConnect = dbo.getDb();
+
+    // With an empty filter, it updates all documents in the database
+    const filter = {};
+
+    //sets the fields that will be updated
+    const updateDoc = {
+        $set: {
+            user: '',
+            userEmail: '',
+            status: 'available',
+            reported: false,
+            updatedAt: new Date()
+        }
+    };
+
+    // deregisters the lockers
+    const result = await dbConnect
+        .collection('lockers')
+        .updateMany(filter, updateDoc)
+        .catch(err => next(err))
+
+    // gets the total number of lockers in the database
+    const totalCount = await dbConnect
+        .collection('lockers')
+        .countDocuments()
+        .catch(err =>next(err))
+
+
+
+    if(result.matchedCount === totalCount){
+        res.json({msg: 'Sucessfully deregistered all lockers'})
+    }else{
+        res.json({err:'Could not deregister all lockers'})   
+    }
+    
+}
+
+
+//Registers a specific locker
+export async function admin_register (req, res, next) {
+    //connect to database
+    const dbConnect = dbo.getDb();
+
+    // Filter with locker number and building
+    const filter = {
+        building: req.body.building,
+        number: parseInt(req.body.number)
+    };
+
+    //sets the fields that will be updated
+    const updateDoc = {
+        $set: {
+            user: req.body.user,
+            userEmail: re/body.userEmail,
+            status: 'registered',
+            reported: false,
+            updatedAt: new Date()
+        }
+    };
+    
+    //registers the locker
+    const result = await dbConnect
+        .collection('lockers')
+        .updateOne(filter, updateDoc)
+        .catch(err => {next(err)});
+
+
+    if (result.matchedCount === 1){
+        res.json({msg: 'Sucessfully registered locker'})
+    }else{
+        res.json({err:'Could not find locker'})
+    }
+
+}
+
+//Lookup status/onwership of locker
+export async function status (req, res, next){
+    //connect to database
+    const dbConnect = dbo.getDb();
+
+    // Filter using the given number 
+    const filter = {
+        building: req.body.building,
+        number: parseInt(req.body.number)
+    };
+
+    // show only user, building, number, status, and report status
+    const options = {
+        projection: {
+            _id: 0,
+            user: 1,
+            building: 1,
+            number: 1,
+            status: 1,
+            reported: 0
+        }
+    };
+
+    //searches for locker in database
+    const result = await dbConnect
+        .collection('lockers')
+        .findOne({filter, options})
+        .catch(err =>next(err))
+
+        if(result){
+            res.json({ msg: result })
+        }else{
+            res.json({err: 'Locker not found'})
+        }
+
+
+}
