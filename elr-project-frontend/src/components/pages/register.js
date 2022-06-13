@@ -1,82 +1,34 @@
-import React, { Component } from 'react';
-import {useEffect} from "react";
-import ReactDOM from "react-dom";
-const registerResult = document.getElementById('register-result'); //for testing reg
+import React, {Component, useState, useEffect} from 'react';
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nameValue: '',
-      emailValue: '',
-      lockerValue: '',
-      lockerOpt: [],
+        input: {
+        nameValue: '',
+        emailValue: '',
+        apicount: 0,
+        serverResponse: '',
+        lockerValue: ''
+      }
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-
-  //added to test
-  // componentDidMount(){
-  //   fetch(`https://api.coinmarketcap.com/v1/ticker/?limit=10`)
-  //   .then(res => res.json())
-  //   .then(json => this.setState({ data: json }));
-  // }
-
-  //registration functions
-  // async function put(uri = '', data = {}) {
-  //   const response = await fetch(uri, {
-  //       method: 'PUT',
-  //       mode: 'cors',
-  //       headers: {
-  //           'Content-Type': 'application/json'
-  //       },
-  //       redirect: 'follow',
-  //       body: JSON.stringify(data)  
-  //   });
-  //   return response.json();
-  // }
-
-//<button onclick='register("ecs", 100, "Rafael Edora", "rvedora@gmail.com")'>Register Test</button>
-//<div id='register-result'></div>
-
-//end of reg funcs
-
-// register(building, number, user, userEmail) {
-//   const data = {'building': building, 'number': number, 'user': user, 'userEmail': userEmail};
-//   put(`http://localhost:5000/register/`, data)
-//   .then(result => {
-//       registerResult.innerHTML = (result.msg) ? result.msg : result.err;
-//   });
-// }
-
-  getLockerOpts() {
-    // Fetch the available locker numbers from the API
-    fetch('lockersapi/new', {
-      method: 'get',
-      mode: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  componentDidMount() { 
+    // this.getLockerOpts();
+    fetch('http://localhost:5000/count')
+    .then(response => {
+      if (response.ok) {
+          return response.json();
+      } else {
+          this.setState({ error: 'error', loading: true });
+      }
     })
-      .then(res => {
-        // If the request succeded, parse the JSON data.
-        // Otherwise show an empty list
-        if (res.status === 200) {
-          return res.json();
-        } else {
-          console.log('Lockers req failed (Code ' + res.status + ')');
-          return [];
-        }
-      })
-      .then(json => this.setState({ lockerOpt: json }));
-  }
-
-  componentWillMount() {
-    this.getLockerOpts();
-  }
+    .then(data => this.setState({ apicount: data}))
+  }  
 
   handleChange(event) {
     const target = event.target;
@@ -88,35 +40,36 @@ class Register extends Component {
     });
   }
 
+  //still need to pass building/number vars from homepage
   handleSubmit(event) {
-    // Send a request to the API to create a new locker
-    fetch('lockersapi/new', {
-      method: 'post',
-      mode: 'same-origin',
+    fetch(`http://localhost:5000/register`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        // 'Origin': 'http://localhost:3000'
       },
       body: JSON.stringify({
-        name: this.state.nameValue,
-        email: this.state.emailValue,
-        locker: this.state.lockerValue,
-      }),
+        building: 'elw',
+        number: 101,
+        user: this.state.nameValue,
+        userEmail: this.state.emailValue
+      })
     })
-      .then(res => {
-        // If the request succeeded, show the thank you page.
-        // Otherwise show the error
-        if (res.status === 200) {
-          this.props.history.push('/register/thankyou');
-        } else if (res.status >= 500) {
-          alert(
-            'An internal server error occurred, please try again later or contact the maintanter.'
+    .then(res => {
+      // If the request succeeded, show the thank you page.
+      // Otherwise show the error
+      if (res.status == 200) {
+        this.setState({serverResponse: res.status})
+        // this.props.history.push('/register/thankyou');
+      } else if (res.status >= 500) {
+        alert(
+          'An internal server error occurred, please try again later or contact the maintanter.'
           );
         } else {
           res.text().then(text => alert(text));
         }
       });
-
-    event.preventDefault();
+      event.preventDefault();
   }
 
   render() {
@@ -152,16 +105,8 @@ class Register extends Component {
           reserve the right to cut your lock at any time. We will keep locker contents for a few months. </label>
           </div><br/>
 
-          <button onclick='register("ecs", 100, "Rafael Edora", "rvedora@gmail.com")'>Register Test</button>
-          <div id='register-result'></div>
-          <script src='src/script.js'></script>
+          <input type="submit" className="btn btn-primary" value="Register" />
 
-          {/*<input type="submit" className="btn btn-primary" value="Register" />*/}
-          {/* <button className="btn btn-primary">
-                  <a href = "http://localhost:3000/thankyou" style={{color: "#000000"}}>
-                    Register
-                  </a>
-          </button> */}
         </form>
       </div>
     );

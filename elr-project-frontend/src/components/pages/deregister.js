@@ -8,12 +8,12 @@ class Deregister extends Component {
       codeValue: '',
       emailValue: '',
       lockerValue: '',
-      lockerOpt: [],
+      nameValue: '',
+      emailValue: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCode   = this.handleCode.bind(this);
   }
 
   handleChange(event) {
@@ -26,17 +26,21 @@ class Deregister extends Component {
     });
   }
 
+  //need to get building and number from previous page
   handleSubmit(event) {
     // Send the code to the API and have it delete the locker
     // if the code is correct
-    fetch('/lockersapi/deregister/confirm', {
-      method: 'delete',
+    fetch('/http://localhost:5000/deregister', {
+      method: 'PUT',
       mode: 'same-origin',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        code: this.state.codeValue,
+        building: 'elw',
+        number: 101,
+        user: this.state.nameValue,
+        userEmail: this.state.emailValue
       }),
     })
       .then(res => {
@@ -45,34 +49,6 @@ class Deregister extends Component {
         if (res.status === 200) {
           this.props.history.push('/deregister/thankyou');
         } else if (res.status >= 500) {
-          alert(
-            'An internal server error occurred, please try again later or contact the maintaner.'
-          );
-        } else {
-          res.text().then(text => alert(text));
-        }
-      });
-
-    event.preventDefault();
-  }
-
-  handleCode(event) {
-    // Send an API request to have a locker reset code genereated
-    // and emailed to the user
-    fetch('/lockersapi/deregister/code', {
-      method: 'post',
-      mode: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        number: this.state.numberValue,
-        email: this.state.emailValue,
-      }),
-    })
-      .then(res => {
-        // If the request succeeded, let the user know
-        if (res.status >= 500) {
           alert(
             'An internal server error occurred, please try again later or contact the maintaner.'
           );
@@ -110,12 +86,8 @@ class Deregister extends Component {
               </div>
             </div>
 
-            {/*<input type="submit" className="btn btn-primary"value="Deregister" />*/}
-            <button className="btn btn-primary">
-                  <a href = "http://localhost:3000/thankyou" style={{color: "#000000"}}>
-                    Deregister
-                  </a>
-            </button>
+            /*<input type="submit" className="btn btn-primary"value="Deregister" />*/
+
           </div>
         </form>
       </div>

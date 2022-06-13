@@ -21,23 +21,27 @@ class Renew extends Component {
     });
   }
 
+  //need to grab data from previous page or add more form options
   handleSubmit(event) {
     // Send a request to the API to renew the locker
-    fetch('/lockersapi/renew', {
-      method: 'post',
+    fetch('http://localhost:5000/register', {
+      method: 'PUT',
       mode: 'same-origin',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: this.state.emailValue,
+        building: 'elw',
+        number: 101,
+        user: "renew test",
+        userEmail: this.state.emailValue
       }),
     })
       .then(res => {
         // If the request succeded, show the thank you page.
         // Otherwise show the error
         if (res.status === 200) {
-          this.props.history.push('/renew/thankyou');
+          this.props.history.push('/renewDone');
         } else if (res.status >= 500) {
           alert(
             'An internal server error occurred, please try again later or contact the maintanter.'

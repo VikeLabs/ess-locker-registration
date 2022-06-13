@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 class Homepage extends Component {
   
@@ -9,40 +8,14 @@ class Homepage extends Component {
       nameValue: '',
       emailValue: '',
       lockerValue: '',
-      lockerOpt: [],
+      buildingValue: '',
+      searchResults: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-
-  getLockerOpts() {
-    // Fetch the available locker numbers from the API
-    fetch('/lockersapi/available', {
-      method: 'get',
-      mode: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(res => {
-        // If the request succeded, parse the JSON data.
-        // Otherwise show an empty list
-        if (res.status === 200) {
-          return res.json();
-        } else {
-          console.log('Lockers req failed (Code ' + res.status + ')');
-          return [];
-        }
-      })
-      .then(json => this.setState({ lockerOpt: json }));
-  }
-
-  componentWillMount() {
-    this.getLockerOpts();
-  }
-
+  
   handleChange(event) {
     const target = event.target;
     const value = target.value;
@@ -54,33 +27,24 @@ class Homepage extends Component {
   }
 
   handleSubmit(event) {
-    // Send a request to the API to create a new locker
-    fetch('/lockersapi/new', {
-      method: 'post',
-      mode: 'same-origin',
+    // Search lockers
+    fetch(`http://localhost:5000/search/building/${this.state.buildingValue}/number/${this.state.lockerValue}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Origin': 'http://localhost:3000'
       },
-      body: JSON.stringify({
-        name: this.state.nameValue,
-        email: this.state.emailValue,
-        locker: this.state.lockerValue,
-      }),
     })
-      .then(res => {
+      .then(response => {
         // If the request succeeded, show the thank you page.
         // Otherwise show the error
-        if (res.status === 200) {
-          this.props.history.push('/register/thankyou');
-        } else if (res.status >= 500) {
-          alert(
-            'An internal server error occurred, please try again later or contact the maintanter.'
-          );
+        if (response.ok) {
+          return response.json();
         } else {
-          res.text().then(text => alert(text));
+          this.setState({ error: 'error', loading: true });
         }
-      });
-
+      })
+      .then(data => this.setState({ searchResults: data}))
     event.preventDefault();
   }
 
@@ -102,30 +66,27 @@ class Homepage extends Component {
                 <div className="form-group" style={{ maxWidth: '40%' }}>
                   <label htmlFor="buildingDrop">Choose building</label>
                   <select id="buildingDrop" className="form-control" name="buildingValue"
-                    value={this.state.lockerValue} onChange={this.handleChange}>
-                    {this.state.lockerOpt.map(value => {
+                    value={this.state.buildingValue} onChange={this.handleChange}>
+                    {/* {this.state.lockerOpt.map(value => {
                       return <option key={value.number}>{value.number}</option>;
-                    })}
+                    })} */}
                     <option value="" enabled>Choose Building</option>
-                    <option value="ELW" enabled>Engineering Lab Wing</option>
-                    <option value="ECS" enabled>Engineering Computer Science Building</option>
+                    <option value="elw" enabled>Engineering Lab Wing</option>
+                    <option value="ecs" enabled>Engineering Computer Science Building</option>
                   </select>
                 </div>
+
 
                 <div className="form-group" style={{ maxWidth: '20%' }}>
                   <label htmlFor="inputLocker">Enter Locker Number</label>
                   <input type="number" name="lockerValue" id="inputLocker" placeholder="Number"
-                    className="form-control" value={this.state.emailValue} onChange={this.handleChange}
+                    className="form-control" value={this.state.lockerValue} onChange={this.handleChange}
                   />
                 </div>
 
-                {/*<input type="submit" className="btn btn-primary" value="Search" />*/}
-                <button className="btn btn-primary">
-                  <a href = "http://localhost:3000/register" style={{color: "#000000"}}>
-                    Search
-                  </a>
-                </button>
+                <input type="submit" className="btn btn-primary" value="Search" />
               </form>
+                {this.state.searchResults.status}
             </div>
           </div>
     );
