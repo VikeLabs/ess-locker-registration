@@ -30,7 +30,7 @@ class Deregister extends Component {
   handleSubmit(event) {
     // Send the code to the API and have it delete the locker
     // if the code is correct
-    fetch('/http://localhost:5000/deregister', {
+    fetch('/http://localhost:8000/api/deregister', {
       method: 'PUT',
       mode: 'same-origin',
       headers: {

@@ -24,7 +24,7 @@ class Renew extends Component {
   //need to grab data from previous page or add more form options
   handleSubmit(event) {
     // Send a request to the API to renew the locker
-    fetch('http://localhost:5000/register', {
+    fetch('http://localhost:8000/api/register', {
       method: 'PUT',
       mode: 'same-origin',
       headers: {

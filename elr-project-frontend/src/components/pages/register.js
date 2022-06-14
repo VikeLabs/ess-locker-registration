@@ -19,7 +19,7 @@ class Register extends Component {
 
   componentDidMount() { 
     // this.getLockerOpts();
-    fetch('http://localhost:5000/count')
+    fetch('http://localhost:8000/api/count')
     .then(response => {
       if (response.ok) {
           return response.json();
@@ -42,7 +42,7 @@ class Register extends Component {
 
   //still need to pass building/number vars from homepage
   handleSubmit(event) {
-    fetch(`http://localhost:5000/register`, {
+    fetch(`http://localhost:8000/api/register`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

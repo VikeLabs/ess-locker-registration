@@ -24,7 +24,7 @@ class Report extends Component {
   }
 
   handleSubmit(event) {
-    fetch(`http://localhost:5000/register`, {
+    fetch(`http://localhost:8000/api/register`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

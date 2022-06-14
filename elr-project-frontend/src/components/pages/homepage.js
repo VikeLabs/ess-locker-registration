@@ -28,7 +28,7 @@ class Homepage extends Component {
 
   handleSubmit(event) {
     // Search lockers
-    fetch(`http://localhost:5000/search/building/${this.state.buildingValue}/number/${this.state.lockerValue}`, {
+    fetch(`http://localhost:8000/api/search/building/${this.state.buildingValue}/number/${this.state.lockerValue}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
