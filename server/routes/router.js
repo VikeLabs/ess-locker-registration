@@ -2,8 +2,6 @@ import { Router } from 'express';
 const routerRoutes = Router();
 import { search, report, register, deregister } from "../controllers/user.js";
 import { resolve, downloadRegisteredLockers, count } from "../controllers/admin.js";
-import pkg from 'express-openid-connect';
-const { requiresAuth } = pkg;
 
 // user routes
 
@@ -27,12 +25,12 @@ routerRoutes.route('/api/deregister').put(deregister);
 // admin routes
 
 // request body has building and number
-routerRoutes.route('/api/resolve').put(requiresAuth(), resolve);
+routerRoutes.route('/api/resolve').put(resolve);
 
 // request body has nothing
-routerRoutes.route('/api/download-registered-lockers').get(requiresAuth(), downloadRegisteredLockers);
+routerRoutes.route('/api/download-registered-lockers').get(downloadRegisteredLockers);
 
 // request body has nothing
-routerRoutes.route('/api/count').get(requiresAuth(), count);
+routerRoutes.route('/api/count').get(count);
 
 export default routerRoutes;
