@@ -64,7 +64,7 @@ export async function downloadRegisteredLockers(req, res, next) {
         .catch(err => next(err));
 
     // convert doc array to csv
-    const fields = (registeredLockers.length > 0) ? Object.keys(registeredLockers[0]) : [];
+    const fields = Object.keys(registeredLockers[0]);
     const opts = { fields };
 
     const csv = await parseAsync(registeredLockers, opts)
@@ -120,7 +120,7 @@ export async function count(req, res, next) {
 // Deregisters a specific locker 
 export async function admin_deregister(req, res, next) {
     //connect to database
-    const dbConnect = dbo.getDb();
+    const dbConnect = getDb();
 
     // filters all lockers using the building and number
     const filter = {
@@ -146,7 +146,7 @@ export async function admin_deregister(req, res, next) {
         .catch(err => {next(err)});
 
 
-    if (result.matchedCount === 1){
+    if (result.modifiedCount === 1){
         res.json({msg: 'Sucessfully deregistered locker'})
     }else{
         res.json({err:'Could not find locker'})
@@ -157,7 +157,7 @@ export async function admin_deregister(req, res, next) {
 // Deregisters all lockers
 export async function deregister_all(req, res, next) {
     //connect to database
-    const dbConnect = dbo.getDb();
+    const dbConnect = getDb();
 
     // With an empty filter, it updates all documents in the database
     const filter = {};
@@ -195,11 +195,10 @@ export async function deregister_all(req, res, next) {
     
 }
 
-
-//Registers a specific locker
-export async function admin_register (req, res, next) {
+//Registers a specific locker to a given email
+export async function admin_register(req, res, next) {
     //connect to database
-    const dbConnect = dbo.getDb();
+    const dbConnect = getDb();
 
     // Filter with locker number and building
     const filter = {
@@ -211,7 +210,7 @@ export async function admin_register (req, res, next) {
     const updateDoc = {
         $set: {
             user: req.body.user,
-            userEmail: re/body.userEmail,
+            userEmail: req.body.userEmail,
             status: 'registered',
             reported: false,
             updatedAt: new Date()
@@ -225,10 +224,10 @@ export async function admin_register (req, res, next) {
         .catch(err => {next(err)});
 
 
-    if (result.matchedCount === 1){
-        res.json({msg: 'Sucessfully registered locker'})
+    if (result.matchedCount === 1) {
+        res.json({msg: "Successfully registered locker"});
     }else{
-        res.json({err:'Could not find locker'})
+        res.json({err:'Could not find locker'});
     }
 
 }
@@ -236,12 +235,49 @@ export async function admin_register (req, res, next) {
 //Lookup status/onwership of locker
 export async function status (req, res, next){
     //connect to database
-    const dbConnect = dbo.getDb();
+    const dbConnect = getDb();
 
     // Filter using the given number 
     const filter = {
-        building: req.body.building,
-        number: parseInt(req.body.number)
+        building: req.params.building,
+        number: parseInt(req.params.number)
+    };
+
+    // show only user, building, number, status, and reported
+    const options = {
+        projection: {
+            _id: 0,
+            user: 1,
+            building: 1,
+            number: 1,
+            status: 1,
+            reported: 1
+        }
+    };
+
+    //searches for locker in database
+    const result = await dbConnect
+        .collection('lockers')
+        .findOne(filter, options)
+        .catch(err => next(err));
+        
+
+    if (result) {
+        res.json(result);
+    } else {
+        res.json({ err: "not found" });
+    }
+
+}
+
+//Get list of reported lockers
+export async function report_list (req, res, next){
+    //connect to database
+    const dbConnect = getDb();
+
+    // Filter using the reported field
+    const filter = {
+       reported: true
     };
 
     // show only user, building, number, status, and report status
@@ -252,21 +288,22 @@ export async function status (req, res, next){
             building: 1,
             number: 1,
             status: 1,
-            reported: 0
+            reported: 1
         }
     };
 
-    //searches for locker in database
+    //searches for locker in database and puts them in an array
     const result = await dbConnect
         .collection('lockers')
-        .findOne({filter, options})
-        .catch(err =>next(err))
+        .find(filter, options)
+        .toArray()
+        .catch(err => next(err));
 
-        if(result){
-            res.json({ msg: result })
-        }else{
-            res.json({err: 'Locker not found'})
-        }
 
+    if (result) {
+        res.json(result);
+    } else {
+        res.json({ err: "not found" });
+    }
 
 }
