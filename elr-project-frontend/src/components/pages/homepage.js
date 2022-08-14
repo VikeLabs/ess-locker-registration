@@ -36,7 +36,7 @@ class Homepage extends Component {
       },
     })
       .then(response => {
-        // If the request succeeded, show the thank you page.
+        // If the request succeeded, return.
         // Otherwise show the error
         if (response.ok) {
           return response.json();
@@ -55,7 +55,7 @@ class Homepage extends Component {
             <h1 className="display-4">ESS Locker Registration</h1>
             
             <p style={{marginTop: 30}}>
-              This is the locker registration page for the lockers in the ELW.
+              This is the locker registration page for the lockers belonging to the ESS.
             </p>
             <br/>
 

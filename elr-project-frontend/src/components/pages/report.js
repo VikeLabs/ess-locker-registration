@@ -29,7 +29,7 @@ class Report extends Component {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
+      body: JSON.stringify({ //should have a reason field?
         building: this.state.buildingValue,
         number: this.state.lockerValue,
       })
