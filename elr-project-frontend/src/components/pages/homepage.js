@@ -45,6 +45,8 @@ class Homepage extends Component {
         }
       })
       .then(data => this.setState({ searchResults: data}))
+      //if result is registered, push to deregister, otherwise push to register
+      //this.props.history.push('/register');
     event.preventDefault();
   }
 
@@ -86,7 +88,7 @@ class Homepage extends Component {
 
                 <input type="submit" className="btn btn-primary" value="Search" />
               </form>
-                {this.state.searchResults.status}
+                {this.state.searchResults.status} 
             </div>
           </div>
     );
