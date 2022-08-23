@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const routerRoutes = Router();
 import { search, report, register, deregister } from "../controllers/user.js";
-import { resolve, downloadRegisteredLockers, count } from "../controllers/admin.js";
+import { resolve, downloadRegisteredLockers, count, deregister_all } from "../controllers/admin.js";
 
 // user routes
 
@@ -32,5 +32,7 @@ routerRoutes.route('/api/download-registered-lockers').get(downloadRegisteredLoc
 
 // request body has nothing
 routerRoutes.route('/api/count').get(count);
+
+routerRoutes.route('/api/deregister-all').get(deregister_all);
 
 export default routerRoutes;

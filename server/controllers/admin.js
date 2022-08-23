@@ -78,7 +78,7 @@ export async function downloadRegisteredLockers(req, res, next) {
         await writeFileProm(fileName, csv);
     
         // send file to client and prompt download
-        res.download(fileName);
+        res.sendFile(fileName);
     } catch (err) {
         next(err);
     }
