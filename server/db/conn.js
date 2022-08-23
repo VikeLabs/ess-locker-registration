@@ -12,15 +12,17 @@ let dbConnection;
 // connect to server
 export function connectToServer() {
   return new Promise(async (resolve, reject) => {
+    try {
+      // connect to database
+      const db = await client.connect();
 
-    // connect to database
-    const db = await client.connect()
-      .catch(err => reject(err));
-
-    // confirm connection
-    dbConnection = db.db("lockers");
-    console.log("Successfully connected to MongoDB.");
-    resolve();
+      // confirm connection
+      dbConnection = db.db("lockers");
+      console.log("Successfully connected to MongoDB.");
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 

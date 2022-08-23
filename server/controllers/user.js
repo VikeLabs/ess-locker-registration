@@ -22,17 +22,20 @@ export async function search(req, res, next) {
         }
     };
 
-    // find locker
-    const result = await dbConnect
-        .collection('lockers')
-        .findOne(filter, options)
-        .catch(err => next(err));
+    try {
+        // find locker
+        const result = await dbConnect
+            .collection('lockers')
+            .findOne(filter, options);
 
-    // send locker to client
-    if (result) {
-        res.json(result);
-    } else {
-        res.json({ err: "not found" });
+        // send locker to client
+        if (result) {
+            res.json(result);
+        } else {
+            res.json({ err: "not found" });
+        }
+    } catch (err) {
+        next(err);
     }
 }
 
@@ -57,17 +60,20 @@ export async function report(req, res, next) {
         }
     };
 
-    // report the locker
-    const result = await dbConnect
-        .collection('lockers')
-        .updateOne(filter, updateDoc)
-        .catch(err => next(err));
-    
-    // send result to client
-    if (result.matchedCount === 1) {
-        res.json({ msg: "success" });
-    } else {
-        res.json({ err: "not found" });
+    try {
+        // report the locker
+        const result = await dbConnect
+            .collection('lockers')
+            .updateOne(filter, updateDoc);
+        
+        // send result to client
+        if (result.matchedCount === 1) {
+            res.json({ msg: "success" });
+        } else {
+            res.json({ err: "not found" });
+        }
+    } catch (err) {
+        next(err);
     }
 }
 
@@ -93,17 +99,20 @@ export async function register(req, res, next) {
         }
     };
 
-    // register the locker
-    const result = await dbConnect
-        .collection('lockers')
-        .updateOne(filter, updateDoc)
-        .catch(err => next(err));
+    try {
+        // register the locker
+        const result = await dbConnect
+            .collection('lockers')
+            .updateOne(filter, updateDoc);
 
-    // send result to client
-    if (result.matchedCount === 1) {
-        res.json({ msg: "success" });
-    } else {
-        res.json({ err: "not found" });
+        // send result to client
+        if (result.matchedCount === 1) {
+            res.json({ msg: "success" });
+        } else {
+            res.json({ err: "not found" });
+        }
+    } catch (err) {
+        next(err);
     }
 }
 
@@ -131,16 +140,19 @@ export async function deregister(req, res, next) {
         }
     };
 
-    // deregister the locker
-    const result = await dbConnect
-        .collection('lockers')
-        .updateOne(filter, updateDoc)
-        .catch(err => next(err));
+    try {
+        // deregister the locker
+        const result = await dbConnect
+            .collection('lockers')
+            .updateOne(filter, updateDoc);
 
-    // send the result to the client
-    if (result.matchedCount === 1) {
-        res.json({ msg: "success" });
-    } else {
-        res.json({ err: "not found" });
+        // send the result to the client
+        if (result.matchedCount === 1) {
+            res.json({ msg: "success" });
+        } else {
+            res.json({ err: "not found" });
+        }
+    } catch (err) {
+        next(err);
     }
 }

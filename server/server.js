@@ -31,11 +31,12 @@ app.use((err, req, res, next) => {
 });
 
 // perform a database connection when the server starts
-await connectToServer()
-  .catch(err => {
-    console.error(err);
-    process.exit();
-  });
+try {
+  await connectToServer();
+} catch {
+  console.error(err);
+  process.exit();
+}
 
 // start the server
 app.listen(PORT, () => {
