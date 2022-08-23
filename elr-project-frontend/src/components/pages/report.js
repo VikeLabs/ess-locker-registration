@@ -29,7 +29,7 @@ class Report extends Component {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
+      body: JSON.stringify({ //should have a reason field?
         building: this.state.buildingValue,
         number: this.state.lockerValue,
       })
@@ -54,7 +54,7 @@ class Report extends Component {
   render() {
     return (
       <div className="container">
-        <h1 className="display-4" style = {{marginTop:30}}>Report an Empty Locker</h1> <br/>
+        <h1 className="display-4" style = {{marginTop:30}}>Report an Locker</h1> <br/>
 
         <form method="post" onSubmit={this.handleSubmit} style={{ maxWidth: '40%'}}>
 
