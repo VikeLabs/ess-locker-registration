@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Homepage from './homepage';
 
 class Deregister extends Component {
   constructor(props) {
@@ -37,8 +38,8 @@ class Deregister extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        building: 'elw',
-        number: 101,
+        building: Homepage.state.buildingValue,
+        number: Homepage.state.lockerValue,
         user: this.state.nameValue,
         userEmail: this.state.emailValue
       }),
@@ -65,7 +66,7 @@ class Deregister extends Component {
       <div className="container">
         <h1 className="display-4" style = {{marginTop:30}}>Deregister This Locker</h1> <br/>
 
-        Locker #204 in ELW is already registered. <br/> If this is your locker and you'd like to deregister it, enter your credentials in the form below.
+        Locker {Homepage.state.lockerValue} in {Homepage.state.buildingValue} is already registered. <br/> If this is your locker and you'd like to deregister it, enter your credentials in the form below.
         <br/><br/>
 
         <form onSubmit={this.handleSubmit}>

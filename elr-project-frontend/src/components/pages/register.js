@@ -1,4 +1,5 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component} from 'react';
+import Homepage from './homepage';
 
 class Register extends Component {
   constructor(props) {
@@ -49,8 +50,8 @@ class Register extends Component {
         // 'Origin': 'http://localhost:3000'
       },
       body: JSON.stringify({
-        building: 'elw',
-        number: 101,
+        building: Homepage.state.buildingValue,
+        number: Homepage.state.lockerValue,
         user: this.state.nameValue,
         userEmail: this.state.emailValue
       })
@@ -77,7 +78,7 @@ class Register extends Component {
       <div className="container">
         <h1 className="display-4" style = {{marginTop:30}}>Register This Locker</h1> <br/>
 
-        The Locker #202 in the ELW is unregisterd. <br/>
+        The Locker {Homepage.state.lockerValue} in {Homepage.state.bulidingValue} is unregisterd. <br/>
         If you would like to register this locker please fill out the form below.<br/><br/>
 
         <form method="post" onSubmit={this.handleSubmit} style={{ maxWidth: '40%'}}>
