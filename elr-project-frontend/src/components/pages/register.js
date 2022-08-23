@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component} from 'react';
 import Homepage from './homepage';
 
 class Register extends Component {
@@ -50,8 +50,8 @@ class Register extends Component {
         // 'Origin': 'http://localhost:3000'
       },
       body: JSON.stringify({
-        building: 'elw',//Homepage.state.buildingValue,
-        number: 100,//Homepage.state.lockerValue,
+        building: Homepage.state.buildingValue,
+        number: Homepage.state.lockerValue,
         user: this.state.nameValue,
         userEmail: this.state.emailValue
       })

@@ -1,4 +1,10 @@
 import React, { Component } from 'react';
+import { useNavigate } from "react-router-dom";
+
+// function redirect(){
+//   let navigate = useNavigate();
+//   navigate('/thankyou')
+// }
 
 class Homepage extends Component {
   
@@ -11,7 +17,7 @@ class Homepage extends Component {
       buildingValue: '',
       searchResults: '',
     };
-
+    
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -20,12 +26,13 @@ class Homepage extends Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-
+    
+    
     this.setState({
       [name]: value,
     });
   }
-
+  
   handleSubmit(event) {
     // Search lockers
     fetch(`http://localhost:8000/api/search/building/${this.state.buildingValue}/number/${this.state.lockerValue}`, {
@@ -35,18 +42,21 @@ class Homepage extends Component {
         'Origin': 'http://localhost:3000'
       },
     })
-      .then(response => {
-        // If the request succeeded, return.
-        // Otherwise show the error
-        if (response.ok) {
-          return response.json();
-        } else {
-          this.setState({ error: 'error', loading: true });
-        }
-      })
-      .then(data => this.setState({ searchResults: data}))
-      //if result is registered, push to deregister, otherwise push to register
-      //this.props.history.push('/register');
+    .then(response => {
+      // If the request succeeded, return.
+      // Otherwise show the error
+      if (response.ok) {
+        return response.json();
+      } else {
+        this.setState({ error: 'error', loading: true });
+      }
+    })
+    .then(data => this.setState({ searchResults: data}))
+    //if result is registered, push to deregister, otherwise push to register
+    //if(this.state.searchResults.status == "available"){
+      //this.props.history.push('/thankyou')
+      //}
+      redirect
     event.preventDefault();
   }
 

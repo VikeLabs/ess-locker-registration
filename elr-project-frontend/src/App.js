@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom';
+import { createBrowserHistory } from 'history'
+
 
 import Navbar from './components/navbar/index.js';
 
@@ -14,11 +16,13 @@ import Report from './components/pages/report.js';
 import Admin from './components/pages/admin.js';
 
 import './assets/css/custom.min.css';
+const history = createBrowserHistory();
+
 
 function App() {
 
   return (
-    <Router>
+    <Router history={history}>
       <Navbar />
       <Routes>
         <Route exact path='/' element={<Homepage/>} />
