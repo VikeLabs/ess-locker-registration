@@ -56,7 +56,7 @@ class Homepage extends Component {
     //if(this.state.searchResults.status == "available"){
       //this.props.history.push('/thankyou')
       //}
-      redirect
+      //redirect
     event.preventDefault();
   }
 
