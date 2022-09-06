@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 // function redirect(){
 //   let navigate = useNavigate();
@@ -35,6 +35,7 @@ class Homepage extends Component {
   
   handleSubmit(event) {
     // Search lockers
+    // this.props.history.push('/thankyou')
     fetch(`http://localhost:8000/api/search/building/${this.state.buildingValue}/number/${this.state.lockerValue}`, {
       method: 'GET',
       headers: {
@@ -52,15 +53,16 @@ class Homepage extends Component {
       }
     })
     .then(data => this.setState({ searchResults: data}))
-    //if result is registered, push to deregister, otherwise push to register
-    //if(this.state.searchResults.status == "available"){
-      //this.props.history.push('/thankyou')
-      //}
-      //redirect
     event.preventDefault();
   }
 
   render() {
+    if (this.state.searchResults.status == "available"){
+      return <Navigate to="/thankyou" />
+    }
+    else if (this.state.searchResults.status == "unavailable"){
+      return <Navigate to="/homepage" />
+    }
     return (
       <div>
         <div className="container"><br/>
