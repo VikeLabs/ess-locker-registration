@@ -1,0 +1,8 @@
+# ignore all folders called node_modules
+node_modules
+# create-react-app
+build
+*.env
+**/test
+# ignore generated files
+files
