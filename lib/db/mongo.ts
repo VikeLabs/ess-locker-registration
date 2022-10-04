@@ -10,17 +10,17 @@ const _client = new MongoClient(connectionString, {
 });
 
 // for caching the connection
-let db: Db | null = null;
+const db: { [key: string]: Db } = {};
 
 // export a singleton instance of the database
 // use this by importing it in other files
 export const client = async (name: string) => {
   // if we already have a connection, return it
-  if (!db) {
-    // connect to the database
-    await _client.connect();
-    // cache the connection
-    db = _client.db(name);
-  }
-  return db;
+  if (db[name]) return db[name];
+  // otherwise, connect to the database
+  await _client.connect();
+  // cache the connection
+  db[name] = _client.db(name);
+  // return the connection
+  return db[name];
 };
