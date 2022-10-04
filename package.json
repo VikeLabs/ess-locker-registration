@@ -1,0 +1,36 @@
+{
+  "name": "ess-locker-registration",
+  "version": "1.0.0",
+  "description": "This is our ess locker registration source code repository.",
+  "main": "index.js",
+  "scripts": {
+    "start": "next start",
+    "dev": "next dev",
+    "build": "next build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VikeLabs/ess-locker-registration.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VikeLabs/ess-locker-registration/issues"
+  },
+  "homepage": "https://github.com/VikeLabs/ess-locker-registration#readme",
+  "dependencies": {
+    "next": "^12.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.8.1",
+    "@types/react": "18.0.21",
+    "autoprefixer": "^10.4.12",
+    "postcss": "^8.4.17",
+    "tailwindcss": "^3.1.8",
+    "typescript": "4.8.4"
+  }
+}
