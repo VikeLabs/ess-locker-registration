@@ -8,3 +8,6 @@ build
 files
 # Next.js
 .next
+# sqlite3
+*.sqlite
+*.db
