@@ -1,7 +1,7 @@
 -- Engine: sqlite3
 CREATE TABLE buildings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL
+    name TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE users (
