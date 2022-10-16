@@ -6,3 +6,8 @@ build
 **/test
 # ignore generated files
 files
+# Next.js
+.next
+# sqlite3
+*.sqlite
+*.db
