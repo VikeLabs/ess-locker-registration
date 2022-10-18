@@ -1,12 +1,7 @@
-import {db} from "../../lib/db";
+import {db, ELW_COUNT, ECS_COUNT, ELW_ID, ECS_ID} from "../../lib/db";
 import * as fs from "fs";
 
 export function initDB() {
-    const ELW_COUNT: number = 309;
-    const ECS_COUNT: number = 529;
-    const ELW_ID = 1;
-    const ECS_ID = 2;
-
     // clear the database
 
     db.prepare("DROP TABLE lockers").run();
@@ -14,7 +9,7 @@ export function initDB() {
     db.prepare("DROP TABLE users").run();
     db.prepare("DROP TABLE registrations").run();
 
-    const schema = fs.readFileSync("schema.sql", "utf8")
+    const schema = fs.readFileSync("schema.sql", "utf8");
     db.exec(schema);
 
     // insert the buildings
@@ -26,16 +21,16 @@ export function initDB() {
 
     // insert the lockers
 
-    const insertLocker = db.prepare("INSERT INTO lockers (building_id, num) VALUES (?,?)");
-
-    let insertCount: number = 0;
+    let insertLockersStmt = "INSERT INTO lockers (building_id, num) VALUES ";
     for (let i = 1; i <= ELW_COUNT; i++) {
-        insertCount += insertLocker.run(ELW_ID, i).changes;
+        insertLockersStmt += `(${ELW_ID}, ${i}),`;
     }
 
     for (let i = 1; i <= ECS_COUNT; i++) {
-        insertCount += insertLocker.run(ECS_ID, i).changes;
+        insertLockersStmt += `(${ECS_ID}, ${i}),`;
     }
+
+    const insertCount = db.prepare(insertLockersStmt.slice(0, -1)).run().changes;
 
     return insertCount === ELW_COUNT + ECS_COUNT;
 }
