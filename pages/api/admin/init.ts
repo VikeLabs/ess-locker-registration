@@ -1,5 +1,5 @@
 import {NextApiRequest, NextApiResponse} from 'next';
-import {initDB} from '../../lib/db/init';
+import {initDB} from '../../../lib/db/init';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (initDB()) {

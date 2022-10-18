@@ -1,18 +1,16 @@
 import {db} from "../../lib/db";
 
 export function initDB() {
-    const inELW: number = 309;
-    const inECS: number = 529;
+    const ELW_COUNT: number = 309;
+    const ECS_COUNT: number = 529;
+    const ELW_ID = 1;
+    const ECS_ID = 2;
 
     // clear the database
 
-    const clearBuildings = db.prepare("DELETE FROM buildings");
-    const clearLockers = db.prepare("DELETE FROM lockers");
-    const clearUsers = db.prepare("DELETE FROM users");
-    const clearRegistrations = db.prepare("DELETE FROM registrations");
+    const clearAll = db.prepare("DELETE FROM buildings, lockers, users, registrations");
 
-    clearBuildings.run();
-    clearLockers.run();
+    clearAll.run();
 
     // insert the buildings
 
@@ -26,13 +24,13 @@ export function initDB() {
     const insertLocker = db.prepare("INSERT INTO lockers (building_id, num) VALUES (?,?)");
 
     let insertCount: number = 0;
-    for (let i = 1; i <= inELW; i++) {
-        insertCount += insertLocker.run(1, i).changes;
+    for (let i = 1; i <= ELW_COUNT; i++) {
+        insertCount += insertLocker.run(ELW_ID, i).changes;
     }
 
-    for (let i = 1; i <= inECS; i++) {
-        insertCount += insertLocker.run(2, i).changes;
+    for (let i = 1; i <= ECS_COUNT; i++) {
+        insertCount += insertLocker.run(ECS_ID, i).changes;
     }
 
-    return insertCount === inELW + inECS;
+    return insertCount === ELW_COUNT + ECS_COUNT;
 }
