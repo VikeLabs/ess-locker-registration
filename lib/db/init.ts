@@ -8,9 +8,15 @@ export function initDB() {
 
     // clear the database
 
-    const clearAll = db.prepare("DELETE FROM buildings, lockers, users, registrations");
+    const clearBuildings = db.prepare("DELETE FROM buildings");
+    const clearLockers = db.prepare("DELETE FROM lockers");
+    const clearUsers = db.prepare("DELETE FROM users");
+    const clearRegistrations = db.prepare("DELETE FROM registrations");
 
-    clearAll.run();
+    clearBuildings.run();
+    clearLockers.run();
+    clearUsers.run();
+    clearRegistrations.run();
 
     // insert the buildings
 
