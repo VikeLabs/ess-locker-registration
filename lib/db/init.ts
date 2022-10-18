@@ -1,4 +1,5 @@
 import {db} from "../../lib/db";
+import * as fs from "fs";
 
 export function initDB() {
     const ELW_COUNT: number = 309;
@@ -8,15 +9,13 @@ export function initDB() {
 
     // clear the database
 
-    const clearBuildings = db.prepare("DELETE FROM buildings");
-    const clearLockers = db.prepare("DELETE FROM lockers");
-    const clearUsers = db.prepare("DELETE FROM users");
-    const clearRegistrations = db.prepare("DELETE FROM registrations");
+    fs.unlink("db.sqlite", (err) => {
+        console.error(err);
+        return false;
+    });
 
-    clearBuildings.run();
-    clearLockers.run();
-    clearUsers.run();
-    clearRegistrations.run();
+    const schemaStmt = fs.readFileSync('schema.sql', 'utf8');
+    db.exec(schemaStmt);
 
     // insert the buildings
 
