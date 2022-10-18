@@ -13,8 +13,6 @@ describe("initializes database", () => {
         const ELW_ID = 1;
         const ECS_ID = 2;
 
-        initDB();
-
         const buildings = db.prepare("SELECT * FROM buildings").all();
         expect(buildings[0].name).toBe("engineering lab wing");
         expect(buildings[1].name).toBe("engineering computer science");
@@ -29,14 +27,13 @@ describe("initializes database", () => {
     });
 
     it("clears users and registrations", () => {
-        initDB();
-
         const usersCountStmt = db.prepare("SELECT COUNT(*) FROM users");
         const usersCount = usersCountStmt.get()["COUNT(*)"];
+        expect(usersCount)
 
         const registrationsCountStmt = db.prepare("SELECT COUNT(*) FROM registrations");
         const registrationsCount = registrationsCountStmt.get()["COUNT(*)"];
 
-        expect(usersCount + registrationsCount).toBe(0);
+        expect(registrationsCount).toBe(0);
     });
 });
