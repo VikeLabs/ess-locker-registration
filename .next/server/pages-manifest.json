@@ -1,0 +1,16 @@
+{
+  "/_app": "pages/_app.js",
+  "/admin": "pages/admin.html",
+  "/api/test": "pages/api/test.js",
+  "/contact": "pages/contact.html",
+  "/deregDone": "pages/deregDone.html",
+  "/deregister": "pages/deregister.html",
+  "/": "pages/index.html",
+  "/notfound": "pages/notfound.html",
+  "/register": "pages/register.html",
+  "/report": "pages/report.html",
+  "/thankyou": "pages/thankyou.html",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/404": "pages/404.html"
+}
