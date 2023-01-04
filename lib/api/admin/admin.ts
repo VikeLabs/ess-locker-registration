@@ -1,17 +1,17 @@
 import { db} from "../../db";
 
 export function getlockers() {
-    return db.prepare("SELECT * FROM lockers").get()
+    return db.prepare("SELECT * FROM lockers").all()
 }
 
 export function getusers() {
-    return db.prepare("SELECT * FROM users").get()
+    return db.prepare("SELECT * FROM users").all()
 }
 
 export function getregistrations() {
-    return db.prepare("SELECT * FROM registrations").get()
+    return db.prepare("SELECT * FROM registrations").all()
 }
 
 export function deregisterall(){
-    const statement = db.prepare("DELETE FROM registrations").get()
+    return db.prepare("DELETE FROM registrations").run()
 }
