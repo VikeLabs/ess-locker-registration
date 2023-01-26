@@ -1,46 +1,40 @@
-
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-
 export default function Home() {
-  return (
-    <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
-            <h1 className="display-4">ESS Locker Registration</h1>
-            
-            <p style={{marginTop: 30}}>
-              This is the locker registration page for the lockers belonging to the ESS.
+    return (
+        <div className='ml-4 py-4 px-2 space-y-2'>
+            <h1 className='text-3xl text-bold py-2'>ESS Locker Registration</h1>
+                
+            <p>
+                Select a locker to begin.
             </p>
             <br/>
 
-              <h2 className="display-7">Locker Search</h2>
-              {/* FORM STARTS */}
-              <form action="/register" method="post" style={{ maxWidth: '80%'}}>
+            <h2 className='text-xl text-bold py-2'>Select Locker</h2>
+            
+            {/* FORM STARTS */}
+            <form action="/register" method="post" className='space-y-3'>
 
 
-                <div className="form-group" style={{ maxWidth: '40%' }}>
-                  <label htmlFor="buildingDrop">Choose building</label>
-                  <select id="buildingDrop" className="form-control" name="buildingValue">
-                    {/* // value={this.state.buildingValue} onChange={this.handleChange}> */}
+                <div>
+                    <label htmlFor="buildingDrop">Building:</label><br/>
+                    <select id="buildingDrop" name="buildingValue" className='border-2 rounded focus:border-black'>
+                      {/* // value={this.state.buildingValue} onChange={this.handleChange}> */}
 
-                    <option value="" >Choose Building</option>
-                    <option value="elw" >Engineering Lab Wing</option>
-                    <option value="ecs" >Engineering Computer Science Building</option>
-                  </select>
+                      <option value="" >Select Building</option>
+                      <option value="elw" >Engineering Lab Wing</option>
+                      <option value="ecs" >Engineering Computer Science Building</option>
+                    </select>
                 </div>
 
 
-                <div className="form-group" style={{ maxWidth: '20%' }}>
-                  <label htmlFor="inputLocker">Enter Locker Number</label>
-                  <input type="number" name="lockerValue" id="inputLocker" placeholder="Number"
-                    className="form-control" 
-                  />
+                <div className="form-group">
+                    <label htmlFor="inputLocker">Locker Number:</label><br/>
+                    <input type="number" name="lockerValue" id="inputLocker" placeholder="Select Number" className='border-2 rounded px-1'/>
                 </div>
 
-                <input type="submit" className="btn btn-primary" value="Search" />
-              </form>
-        </figure>    
-  )
+                <input type="submit" value="Search" className='bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded'/>
+            </form>
+        </div>    
+    )
 }
 
 //HOME
