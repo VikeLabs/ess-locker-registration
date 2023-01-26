@@ -5,9 +5,9 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    fortFamily: {
+    fontFamily: {
       sans: ["Sofia Sans", "sans-serif"],
-      serif: ["Merriweather", "serif"],
+      serif: ["serif"],
     },
     extend: {},
   },
