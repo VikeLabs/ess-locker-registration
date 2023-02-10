@@ -1,32 +1,26 @@
-export default function Deregister(){
-    return(
-    <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
-        <h1 className="display-4" style = {{marginTop:30}}>Deregister This Locker</h1> <br/>
+export default function Deregister() {
+  return (
+    <div className='ml-4 py-4 px-2 space-y-2'>
+      <h1 className='text-3xl text-bold py-2'>Deregister This Locker</h1>
 
-        Locker  in  is already registered. <br/> If this is your locker and you'd like to deregister it, enter your credentials in the form below.
-        <br/><br/>
+      <p>
+        Locker [locker] is already registered.<br />
+        If this is your locker and you'd like to deregister it, enter your name and email (case sensitive) in the form below.
+      </p>
 
-        <form >
-          <div className="form-group">
+      <form action="/api/deregister" method="post" className='space-y-3'>
+        <div>
+          <label htmlFor="inputName">Name:</label><br />
+          <input id="inputName" name="nameValue" type="text" placeholder="Enter name" className='px-1 border-2 rounded focus:border-black' />
+        </div>
 
-          <div className="form-group" style = {{maxWidth: "40%"}}>
-            <label htmlFor="inputName">Name</label>
-            <input type="text" name="nameValue" placeholder="Enter name" className="form-control"
-            />
-          </div>
-            <label htmlFor="inputCode">Email</label>
-            <div className="form-row" style = {{maxWidth: "80%"}}>
-              <div className="form-group col-md-6">
-                <input type="email" name="emailValue" id="inputEmail" placeholder="Enter email"
-                  className="form-control"
-                />
-              </div>
-            </div>
+        <div>
+          <label htmlFor="inputCode">Email:</label><br />
+          <input id="inputEmail" name="emailValue" type="email" placeholder="Enter email" className='px-1 border-2 rounded focus:border-black' />
+        </div>
 
-            <input type="submit" className="btn btn-primary"value="Deregister" />
-
-          </div>
-        </form>
-    </figure>
+        <input type="submit" value="Deregister" className='bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded' />
+      </form>
+    </div>
   );
 }

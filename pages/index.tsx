@@ -6,15 +6,11 @@ export default function Home() {
             <p>
                 Select a locker to begin.
             </p>
-            <br />
 
-            <h2 className='text-xl text-bold py-2'>Select Locker</h2>
-
-            <form action="/register" method="post" className='space-y-3'>
+            <form action="/api/search" method="post" className='space-y-3'>
                 <div>
                     <label htmlFor="buildingDrop">Building:</label><br />
                     <select id="buildingDrop" name="buildingValue" className='border-2 rounded focus:border-black'>
-                        <option value="" >Select Building</option>
                         <option value="elw" >Engineering Lab Wing</option>
                         <option value="ecs" >Engineering Computer Science Building</option>
                     </select>
@@ -22,7 +18,7 @@ export default function Home() {
 
                 <div>
                     <label htmlFor="inputLocker">Locker Number:</label><br />
-                    <input type="number" name="lockerValue" id="inputLocker" placeholder="Select Number" className='border-2 rounded px-1' />
+                    <input id="inputLocker" name="lockerValue" type="number" placeholder="Select Number" className='px-1 border-2 rounded focus:border-black' />
                 </div>
 
                 <input type="submit" value="Search" className='bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded' />
