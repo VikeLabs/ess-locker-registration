@@ -14,7 +14,7 @@ export default function Admin() {
       <Head>
         <title>Admin Tools</title>
       </Head>
-      <h1 className="text-3xl text-bold py-2">Admin</h1>
+      <h1 className="text-3xl text-bold py-2">Admin Tools</h1>
 
       <Counts></Counts>
 
