@@ -1,30 +1,32 @@
+import Head from 'next/head';
+
 export default function report() {
   return (
-    <div className="container">
-      <h1 className="display-4" style={{ marginTop: 30 }}>Report an Locker</h1> <br />
+    <div className='ml-4 py-4 px-2 space-y-2'>
+      <Head>
+        <title>Report a Locker</title>
+      </Head>
+      <h1 className='text-3xl text-bold py-2'>Report a Locker</h1>
 
-      <form method="post" style={{ maxWidth: '40%' }}>
+      <p>
+        Select a locker to report.
+      </p>
 
-        <div className="form-group" style={{ maxWidth: '40%' }}>
-          <label htmlFor="buildingDrop">Choose building</label>
-          <select id="buildingDrop" className="form-control" name="buildingValue"
-          >
-
-            <option value="" >Choose Building</option>
+      <form action="/api/report" method="post" className='space-y-3'>
+        <div>
+          <label htmlFor="buildingDrop">Building:</label><br />
+          <select id="buildingDrop" name="buildingValue" className='border-2 rounded focus:border-black'>
             <option value="elw" >Engineering Lab Wing</option>
             <option value="ecs" >Engineering Computer Science Building</option>
           </select>
         </div>
 
-
-        <div className="form-group" style={{ maxWidth: '20%' }}>
-          <label htmlFor="inputLocker">Enter Locker Number</label>
-          <input type="number" name="lockerValue" id="inputLocker" placeholder="Number"
-            className="form-control"
-          />
+        <div>
+          <label htmlFor="inputLocker">Locker Number:</label><br />
+          <input id="inputLocker" name="lockerValue" type="number" placeholder="Select Number" className='px-1 border-2 rounded focus:border-black' />
         </div>
 
-        <input type="submit" className="btn btn-primary" value="Submit" />
+        <input type="submit" value="Report" className='bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded' />
       </form>
     </div>
   );
