@@ -1,38 +1,37 @@
-export default function Register(){
-    return(
-        <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
-            <h1 className="display-4" style = {{marginTop:30}}>Register This Locker</h1> <br/>
+import { useRouter } from "next/router";
 
-            The Locker {} in {} is unregisterd. <br/>
-            If you would like to register this locker please fill out the form below.<br/><br/>
+export default function Register() {
+    const router = useRouter();
+    const { building: lockerBuilding, number: lockerNumber } = router.query;
 
-            <form method="post" style={{ maxWidth: '40%'}}>
-                <div className="form-group">
-                    <label htmlFor="inputName">Name</label>
-                    <input type="text" name="nameValue" placeholder="Enter name" className="form-control"
-                    />
-                </div>
+    return (
+        <div className='ml-4 py-4 px-2 space-y-2'>
+            <h1 className='text-3xl text-bold py-2'>Register This Locker</h1>
 
-                <div className="form-group">
-                    <label htmlFor="inputEmail">Email address</label>
-                    <input type="email" name="emailValue" id="inputEmail" placeholder="Enter email"
-                    className="form-control"
-                    />
-                    <small id="emailHelp" className="form-text text-muted">
-                    Your email will not be shared with anyone else. We will send you messages
-                    regarding the status of your reservation.
-                    </small>
-                </div>
-                
+            <p>
+                {lockerBuilding} {lockerNumber} is unregistered.<br />
+                If you would like to register {lockerBuilding} {lockerNumber}, please fill out the form below:
+            </p>
+
+            <form action="/api/register" method="post" className='space-y-3'>
                 <div>
-                <input type="checkbox" id="tos" name="tos"/>
-                <label>I acknowledge that these services are offered with no guarantee, and we 
-                reserve the right to cut your lock at any time. We will keep locker contents for a few months. </label>
-                </div><br/>
+                    <label htmlFor="inputName">Name:</label><br />
+                    <input id="inputName" name="nameValue" type="text" placeholder="Enter name" className='px-1 border-2 rounded focus:border-black' />
+                </div>
 
-                <input type="submit" className="btn btn-primary" value="Register" />
+                <div>
+                    <label htmlFor="inputEmail">Email:</label><br />
+                    <input id="inputEmail" name="emailValue" type="email" placeholder="Enter email" className="px-1 border-2 rounded focus:border-black" />
+                </div>
 
+                <div>
+                    <input id="tos" name="tos" type="checkbox" />
+                    <label htmlFor="tos">I acknowledge that these services are offered with no guarantee, and we
+                        reserve the right to cut your lock at any time. If we cut your lock, we will keep your locker contents for a few months. </label>
+                </div>
+
+                <input type="submit" value="Register" className='bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded' />
             </form>
-        </figure>
-  );
+        </div>
+    );
 }
