@@ -15,7 +15,6 @@ export function register(building: number, number: number, name: string, email: 
     }
 }
 
-
 export function deregister(building: number, number: number, name: string, email: string):boolean {
     try{
         const user = db.prepare("SELECT id FROM users WHERE name = ? AND email = ?").get(name, email)
@@ -28,7 +27,6 @@ export function deregister(building: number, number: number, name: string, email
 
         return false
     }
-    
 }
 
 export function report(building: number, number: number) {
@@ -41,5 +39,4 @@ export function report(building: number, number: number) {
     catch(error){
         return false
     }
-    
 }
