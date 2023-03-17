@@ -22,9 +22,6 @@ export default function Navbar() {
       <a href="/notfound" className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded">
         Not Found
       </a>
-      <a href="/contact" className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded">
-        Contact
-      </a>
       <a href="/report" className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded">
         Report
       </a>
