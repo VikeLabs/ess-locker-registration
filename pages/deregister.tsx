@@ -17,21 +17,28 @@ export default function Deregister() {
       </p>
 
       <p className="pt-4">
-        If {lockerBuilding} {lockerNumber} is your locker and you'd like to deregister it, enter your name and email (case sensitive) in the form below.
+        If {lockerBuilding} {lockerNumber} is your locker and you'd like to deregister it,
+        enter your name and email (case sensitive) in the form below.
       </p>
 
       <form action="/api/deregister" method="post" className='space-y-3'>
         <div>
           <label htmlFor="inputName">Name:</label><br />
-          <input id="inputName" name="nameValue" type="text" placeholder="Enter name" className='px-1 border-2 rounded focus:border-black' />
+          <input id="inputName" name="nameValue" type="text" placeholder="Enter name" required
+            className='px-1 border-2 rounded focus:border-black'
+          />
         </div>
 
         <div>
           <label htmlFor="inputCode">Email:</label><br />
-          <input id="inputEmail" name="emailValue" type="email" placeholder="Enter email" className='px-1 border-2 rounded focus:border-black' />
+          <input id="inputEmail" name="emailValue" type="email" placeholder="Enter email" required
+            className='px-1 border-2 rounded focus:border-black'
+          />
         </div>
 
-        <input type="submit" value="Deregister" className='bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded' />
+        <input type="submit" value="Deregister"
+          className='bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded'
+        />
       </form>
 
       <p className="pt-4">
@@ -39,7 +46,9 @@ export default function Deregister() {
       </p>
 
       <form action="/api/report" method="post" className='space-y-3'>
-        <input type="submit" value="Report Registered Locker" className='bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded' />
+        <input type="submit" value="Report Registered Locker"
+          className='bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded'
+        />
       </form>
     </div>
   );
