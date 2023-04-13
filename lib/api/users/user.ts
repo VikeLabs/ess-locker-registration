@@ -1,9 +1,26 @@
 import { db} from "../../db";
 
-export function register(building: number, number: number, name: string, email: string):boolean {
+
+const email_restriction = (email_address: string) =>{
+    const re = /^[A-Za-z0-9]+@uvic.ca$/;
+    
+    return re.test(email_address); 
+}
+
+export function register(building: number, number: number, name: string, email: string, restrict_email:boolean):boolean {
     try{
 
-        const user_statement = db.prepare("INSERT INTO users (name, email) VALUES(?, ?)").run(name, email)
+        let user_statement = db.prepare("INSERT INTO users (name, email) VALUES(?, ?)").run(name, email)
+
+        if (restrict_email){
+            const email_check = email_restriction(email)
+            if (email_check){
+                user_statement = db.prepare("INSERT INTO users (name, email) VALUES(?, ?)").run(name, email)
+            }else{
+                user_statement = db.prepare("INSERT INTO users (name, email) VALUES(?, ?)").run(name, null)
+            }
+        }
+        
         const statement = db.prepare("INSERT INTO registrations (building_id, num, reported_at, user_id) VALUES (?, ?, ?, ?)")
 
         const info = statement.run(building, number, null, user_statement.lastInsertRowid)
@@ -27,6 +44,7 @@ export function deregister(building: number, number: number, name: string, email
 
         return false
     }
+    
 }
 
 export function report(building: number, number: number) {
@@ -39,4 +57,5 @@ export function report(building: number, number: number) {
     catch(error){
         return false
     }
+    
 }
