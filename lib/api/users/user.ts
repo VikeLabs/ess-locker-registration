@@ -1,6 +1,5 @@
 import { db} from "../../db";
 
-
 const email_restriction = (email_address: string) =>{
     const re = /^[A-Za-z0-9]+@uvic.ca$/;
     
@@ -9,17 +8,14 @@ const email_restriction = (email_address: string) =>{
 
 export function register(building: number, number: number, name: string, email: string, restrict_email:boolean):boolean {
     try{
-
-        let user_statement = db.prepare("INSERT INTO users (name, email) VALUES(?, ?)").run(name, email)
-
         if (restrict_email){
             const email_check = email_restriction(email)
-            if (email_check){
-                user_statement = db.prepare("INSERT INTO users (name, email) VALUES(?, ?)").run(name, email)
-            }else{
-                user_statement = db.prepare("INSERT INTO users (name, email) VALUES(?, ?)").run(name, null)
+            if (!email_check){
+                return false                
             }
         }
+        
+        let user_statement = db.prepare("INSERT INTO users (name, email) VALUES(?, ?)").run(name, email)
         
         const statement = db.prepare("INSERT INTO registrations (building_id, num, reported_at, user_id) VALUES (?, ?, ?, ?)")
 
