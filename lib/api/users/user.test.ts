@@ -1,5 +1,5 @@
 import { initDB } from "../../db/init";
-import {register, deregister, report } from "./user";
+import {register, deregister, report, search} from "./user";
 
 describe("Testing User Controller in different scenarios after filling database with lockers", () => {
     it("fills the biuldings and users tables and return a truthy value", () => {
