@@ -48,6 +48,35 @@ describe("Testing User Controller in different scenarios after filling database 
           });
     })
 
+    describe("Testing search with a registered locker", () => {
+        it("It searches the database and returns a registration object indicating the locker is not available", () =>{
+            const row = search(2, 101)
+            expect(row).toHaveProperty('building_id', 2)
+            expect(row).toHaveProperty('num', 101)
+            expect(row).toHaveProperty('reported_at', null)
+            expect(row).toHaveProperty('available', false)
+
+        })
+    })
+
+    describe("Testing search with a valid and uregistered locker", () => {
+        it("It searches the database and returns a registration object indicating the locker is not available", () =>{
+            const row = search(1, 200)
+            expect(row).toHaveProperty('building_id', 1)
+            expect(row).toHaveProperty('num', 200)
+            expect(row).toHaveProperty('reported_at', null)
+            expect(row).toHaveProperty('available', true)
+            
+        })
+    })
+
+    describe("Testing search with an invalid locker", () => {
+        it("It searches the database and returns null", () =>{
+            const row = search(1, 1000)
+            expect(row).toBe(null)
+        })
+    })
+
     describe("Testing deregister with an existing user and a locker they registered", () => {
         it("It deregisters a locker and should return a truthy value", () => {
             const deregistrations = deregister(1, 2, "Chicken Run", "yumyum@uvic.ca");

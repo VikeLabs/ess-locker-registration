@@ -55,3 +55,40 @@ export function report(building: number, number: number) {
     }
     
 }
+
+type registrationInfo = {
+    building: number,
+    locker: number,
+    available: boolean,
+    reportedAt: Date
+};
+
+export function search(building: number, number: number):registrationInfo | null {
+
+    try{
+        const registration_key = db.prepare("SELECT * FROM lockers WHERE building_id = ? and num = ? ").get(building, number)
+
+        if(!registration_key){
+            return null
+        }
+
+        let returned_row = db.prepare("SELECT building_id, num, reported_at FROM registrations WHERE building_id = ? and num = ? ").get(building, number)
+
+        if(returned_row){
+            returned_row.available = false
+        }else{
+            returned_row = {
+                building_id: building,
+                num: number,
+                reported_at: null,
+                available: true
+            }
+        }
+        
+        return returned_row
+
+    }
+    catch(error){
+        return null
+    }
+}
