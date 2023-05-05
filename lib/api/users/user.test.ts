@@ -1,4 +1,5 @@
 import { initDB } from "../../db/init";
+import { ECS_ID } from "../../db/index";
 import {register, deregister, report, search} from "./user";
 
 describe("Testing User Controller in different scenarios after filling database with lockers", () => {
@@ -51,7 +52,7 @@ describe("Testing User Controller in different scenarios after filling database 
     describe("Testing search with a registered locker", () => {
         it("It searches the database and returns a registration object indicating the locker is not available", () =>{
             const row = search(2, 101)
-            expect(row).toHaveProperty('building_id', 2)
+            expect(row).toHaveProperty('building_id', ECS_ID)
             expect(row).toHaveProperty('num', 101)
             expect(row).toHaveProperty('reported_at', null)
             expect(row).toHaveProperty('available', false)
@@ -60,7 +61,7 @@ describe("Testing User Controller in different scenarios after filling database 
     })
 
     describe("Testing search with a valid and uregistered locker", () => {
-        it("It searches the database and returns a registration object indicating the locker is not available", () =>{
+        it("It searches the database and returns a registration object indicating the locker is available", () =>{
             const row = search(1, 200)
             expect(row).toHaveProperty('building_id', 1)
             expect(row).toHaveProperty('num', 200)
