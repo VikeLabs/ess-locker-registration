@@ -1,6 +1,28 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import { ECS_ID, ELW_ID, ECS_COUNT, ELW_COUNT } from '../lib/locker_constants';
 
 export default function Search() {
+  function onSubmit(event) {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const building = parseInt(data.get('building') as string);
+    const number = parseInt(data.get('number') as string);
+
+    if (building === ELW_ID) {
+      if (number < 1 || number > ELW_COUNT) {
+        alert('Invalid locker number');
+        return false;
+      }
+    }
+
+    if (building === ECS_ID) {
+      if (number < 1 || number > ECS_COUNT) {
+        alert('Invalid locker number');
+        return false;
+      }
+    }
+  }
+
   return (
     <div className='ml-4 py-4 px-2 space-y-2'>
       <Head>
@@ -12,15 +34,15 @@ export default function Search() {
         Select a locker to begin.
       </p>
 
-      <form action="/api/search" className='space-y-3'>
+      <form action="/api/search" onSubmit={onSubmit} className='space-y-3'>
         <div>
           <label htmlFor="buildingDrop">Building:</label>
           <br />
           <select id="buildingDrop" name="building" required
             className='border-2 rounded focus:border-black'
           >
-            <option value="elw" >Engineering Lab Wing</option>
-            <option value="ecs" >Engineering Computer Science Building</option>
+            <option value={ELW_ID} >Engineering Lab Wing</option>
+            <option value={ECS_ID} >Engineering Computer Science Building</option>
           </select>
         </div>
 
@@ -37,5 +59,5 @@ export default function Search() {
         />
       </form>
     </div>
-  )
+  );
 }
