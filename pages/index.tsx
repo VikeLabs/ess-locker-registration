@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { ECS_ID, ELW_ID, ECS_COUNT, ELW_COUNT } from '../lib/locker_constants';
+import validateSearch from '../lib/form_validation/validate_search';
 
 export default function Search() {
   function onSubmit(event) {
@@ -8,19 +9,7 @@ export default function Search() {
     const building = parseInt(data.get('building') as string);
     const number = parseInt(data.get('number') as string);
 
-    if (building === ELW_ID) {
-      if (number < 1 || number > ELW_COUNT) {
-        alert('Invalid locker number');
-        return false;
-      }
-    }
-
-    if (building === ECS_ID) {
-      if (number < 1 || number > ECS_COUNT) {
-        alert('Invalid locker number');
-        return false;
-      }
-    }
+    return validateSearch(building, number);
   }
 
   return (
