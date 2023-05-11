@@ -1,4 +1,5 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import { ELW_ID, ECS_ID } from '../lib/locker_constants';
 
 export default function Search() {
   return (
@@ -19,8 +20,8 @@ export default function Search() {
           <select id="buildingDrop" name="building" required
             className='border-2 rounded focus:border-black'
           >
-            <option value="elw" >Engineering Lab Wing</option>
-            <option value="ecs" >Engineering Computer Science Building</option>
+            <option value={ELW_ID} >Engineering Lab Wing</option>
+            <option value={ECS_ID} >Engineering Computer Science Building</option>
           </select>
         </div>
 
