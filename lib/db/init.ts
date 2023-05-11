@@ -1,4 +1,5 @@
-import {db, ELW_COUNT, ECS_COUNT, ELW_ID, ECS_ID} from "../../lib/db";
+import {db} from "./";
+import {ELW_COUNT, ECS_COUNT, ELW_ID, ECS_ID} from "../locker_constants";
 import * as fs from "fs";
 
 export function initDB() {
