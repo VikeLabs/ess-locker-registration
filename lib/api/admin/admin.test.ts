@@ -101,5 +101,3 @@ describe("Testing Admin Controller in different scenarios after filling database
 
 })
 
-
-})
