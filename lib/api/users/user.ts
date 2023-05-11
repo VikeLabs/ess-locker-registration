@@ -1,4 +1,5 @@
 import { db} from "../../db";
+import { registrationInfo } from "../../types";
 
 const email_restriction = (email_address: string) =>{
     const re = /^[A-Za-z0-9]+@uvic.ca$/;
@@ -55,13 +56,6 @@ export function report(building: number, number: number) {
     }
     
 }
-
-type registrationInfo = {
-    building: number,
-    locker: number,
-    available: boolean,
-    reportedAt: Date
-};
 
 export function search(building: number, number: number):registrationInfo | null {
 
