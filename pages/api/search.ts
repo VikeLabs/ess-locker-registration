@@ -19,15 +19,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(404).json({ message: "Locker not found" });
     }
 
-    if (registrationInfo.available) {
-        return res.redirect(200, `/register?building=${building}&number=${number}`);
-    }
-
-    let deregisterURL = `/deregister?building=${building}&number=${number}`;
-
-    if (registrationInfo.reported_at) {
-        deregisterURL += "&reported=true";
-    }
-
-    return res.redirect(200, deregisterURL);
+    res.status(200).json(registrationInfo);
+    return
 }
