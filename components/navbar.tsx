@@ -1,4 +1,12 @@
 export default function Navbar() {
+  async function initDB() {
+    try {
+      const response = await fetch('/api/admin/init');
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="flex items-center justify-start bg-gray-800 px-3 py-2 space-x-3">
       <a href="/" className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded">
@@ -25,6 +33,9 @@ export default function Navbar() {
       <a href="/report" className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded">
         Report
       </a>
+      <button onClick={initDB} className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded">
+        Init DB
+      </button>
     </div>
   )
 }
