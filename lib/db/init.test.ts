@@ -1,5 +1,6 @@
 import { initDB } from "./init";
-import {db, ELW_COUNT, ECS_COUNT, ELW_ID, ECS_ID} from "./";
+import {db} from "./";
+import { ELW_COUNT, ECS_COUNT, ELW_ID, ECS_ID} from "../locker_constants";
 
 describe("initializes database", () => {
 

@@ -1,5 +1,5 @@
 import { initDB } from "../../db/init";
-import { ECS_ID } from "../../db/index";
+import { ECS_ID, ELW_ID } from "../../locker_constants";
 import {register, deregister, report, search} from "./user";
 
 describe("Testing User Controller in different scenarios after filling database with lockers", () => {
@@ -9,49 +9,49 @@ describe("Testing User Controller in different scenarios after filling database 
 
     describe("Testing register with an existing locker and a non-existent user", () => {
         it("It registers a locker and should return a truthy value", () => {
-            const registrations = register(1, 2, "Chicken Run", "yumyum@uvic.ca", false);
+            const registrations = register(ELW_ID, 2, "Chicken Run", "yumyum@uvic.ca", false);
             expect(registrations).toBe(true);
           });
     })
 
     describe("Testing register with an existing locker and an existing user", () => {
         it("It should register the locker and should return a truthy value", () => {
-            const registrations = register(2, 22, "Chicken Run", "yumyum@uvic.ca", false);
+            const registrations = register(ECS_ID, 22, "Chicken Run", "yumyum@uvic.ca", false);
             expect(registrations).toBe(true);
           });
     })
 
     describe("Testing register with a registered existing locker and a non-existent user", () => {
         it("It should not register an already registered locker and should return a falsy value", () => {
-            const registrations = register(1, 2, "Darla Dupe", "Dish@gmail.com", false);
+            const registrations = register(ELW_ID, 2, "Darla Dupe", "Dish@gmail.com", false);
             expect(registrations).toBe(false);
           });
     })
 
     describe("Testing register with a non-existent (invalid) locker", () => {
         it("It should not register a non-existent locker and should return a falsy value", () => {
-            const registrations = register(1, 900, "Darla Dupe", "Dish@gmail.com", false);
+            const registrations = register(ELW_ID, 900, "Darla Dupe", "Dish@gmail.com", false);
             expect(registrations).toBe(false);
           });
     })
 
     describe("Testing register with email restriction on and a restricted email address", () => {
         it("It should not register a restricted email should return a falsy value", () => {
-            const registrations = register(2, 100, "Darla Dupe", "Dish@gmail.com", true);
+            const registrations = register(ECS_ID, 100, "Darla Dupe", "Dish@gmail.com", true);
             expect(registrations).toBe(false);
           });
     })
 
     describe("Testing register with email restriction on and a restricted email address", () => {
         it("It should register a restricted email should return a truthy value", () => {
-            const registrations = register(2, 101, "Darla Dupe", "dish@uvic.ca", true);
+            const registrations = register(ECS_ID, 101, "Darla Dupe", "dish@uvic.ca", true);
             expect(registrations).toBe(true);
           });
     })
 
     describe("Testing search with a registered locker", () => {
         it("It searches the database and returns a registration object indicating the locker is not available", () =>{
-            const row = search(2, 101)
+            const row = search(ECS_ID, 101)
             expect(row).toHaveProperty('building_id', ECS_ID)
             expect(row).toHaveProperty('num', 101)
             expect(row).toHaveProperty('reported_at', null)
@@ -62,8 +62,8 @@ describe("Testing User Controller in different scenarios after filling database 
 
     describe("Testing search with a valid and uregistered locker", () => {
         it("It searches the database and returns a registration object indicating the locker is available", () =>{
-            const row = search(1, 200)
-            expect(row).toHaveProperty('building_id', 1)
+            const row = search(ELW_ID, 200)
+            expect(row).toHaveProperty('building_id', ELW_ID)
             expect(row).toHaveProperty('num', 200)
             expect(row).toHaveProperty('reported_at', null)
             expect(row).toHaveProperty('available', true)
@@ -73,28 +73,28 @@ describe("Testing User Controller in different scenarios after filling database 
 
     describe("Testing search with an invalid locker", () => {
         it("It searches the database and returns null", () =>{
-            const row = search(1, 1000)
+            const row = search(ELW_ID, 1000)
             expect(row).toBe(null)
         })
     })
 
     describe("Testing deregister with an existing user and a locker they registered", () => {
         it("It deregisters a locker and should return a truthy value", () => {
-            const deregistrations = deregister(1, 2, "Chicken Run", "yumyum@uvic.ca");
+            const deregistrations = deregister(ELW_ID, 2, "Chicken Run", "yumyum@uvic.ca");
             expect(deregistrations).toBe(true);
           });
     })
 
     describe("Testing deregister with a non-existent user", () => {
         it("It deregisters a locker and should return a falsy value", () => {
-            const deregistrations = deregister(1, 2, "Polly", "yumyum@uvic.ca");
+            const deregistrations = deregister(ELW_ID, 2, "Polly", "yumyum@uvic.ca");
             expect(deregistrations).toBe(false)
           });
     })
 
     describe("Testing deregister with an existing user and a locker they didn't register ", () => {
         it("It deregisters a locker and should return a falsy value", () => {
-            const registrations = register(1, 2, "Chicken Run", "yumyum@uvic.ca", false);
+            const registrations = register(ELW_ID, 2, "Chicken Run", "yumyum@uvic.ca", false);
             const deregistrations = deregister(1, 34, "Chicken Run", "yumyum@uvic.ca");
             expect(deregistrations).toBe(false)
           });
@@ -102,22 +102,22 @@ describe("Testing User Controller in different scenarios after filling database 
 
     describe("Testing report on a registered locker", ()=>{
         it("It updates the reported_at date for the registration with the locker", () => {
-            const registrations = register(1, 5, "Chicken Run", "yumyum@uvic.ca", false);
-            const reported_val = report(1, 5);
+            const registrations = register(ELW_ID, 5, "Chicken Run", "yumyum@uvic.ca", false);
+            const reported_val = report(ELW_ID, 5);
             expect(reported_val).toBe(true)
         })
     })
 
     describe("Testing report on a non-existent locker", ()=>{
         it("It should return a falsy value since the locker doesn't exist", () => {
-            const reported_val = report(1, 400);
+            const reported_val = report(ELW_ID, 400);
             expect(reported_val).toBe(false)
         })
     })
 
     describe("Testing report on an unclaimed locker", ()=>{
         it("It shoudl return a falsy value since the locker is unclaimed", () => {
-            const reported_val = report(1, 100);
+            const reported_val = report(ELW_ID, 100);
             expect(reported_val).toBe(false)
         })
     })
