@@ -25,7 +25,7 @@ describe("Testing search handler with a registered locker", () => {
 
         handler(req, mockedRes);
 
-        expect(mockedRes.status).toHaveBeenCalledWith(200);
+        expect(mockedRes.status).toHaveBeenLastCalledWith(200);
     });
 
     it("Returns registration information when the locker is registered", async () => {
@@ -40,7 +40,7 @@ describe("Testing search handler with a registered locker", () => {
 
         handler(req, mockedRes);
 
-        expect(mockedJson).toHaveBeenCalledWith({ available: false, building_id: ECS_ID, num: 101, reported_at: null });
+        expect(mockedJson).toHaveBeenLastCalledWith({ available: false, building_id: ECS_ID, num: 101, reported_at: null });
     });
 
     it("Returns registration information when the locker is not registered", async () => {
@@ -54,7 +54,7 @@ describe("Testing search handler with a registered locker", () => {
 
         handler(req, mockedRes);
 
-        expect(mockedJson).toHaveBeenCalledWith({ available: true, building_id: ELW_ID, num: 201, reported_at: null });
+        expect(mockedJson).toHaveBeenLastCalledWith({ available: true, building_id: ELW_ID, num: 201, reported_at: null });
     });
 
     it("Returns HTTP 404 when the locker does not exist", async () => {
@@ -68,7 +68,7 @@ describe("Testing search handler with a registered locker", () => {
 
         handler(req, mockedRes);
 
-        expect(mockedRes.status).toHaveBeenCalledWith(404);
+        expect(mockedRes.status).toHaveBeenLastCalledWith(404);
     });
 
     it("Returns HTTP 400 when the query is invalid", async () => {
@@ -82,6 +82,6 @@ describe("Testing search handler with a registered locker", () => {
 
         handler(req, mockedRes);
 
-        expect(mockedRes.status).toHaveBeenCalledWith(404);
+        expect(mockedRes.status).toHaveBeenLastCalledWith(400);
     });
 });
