@@ -12,7 +12,7 @@ const mockedRes = {
 
 initDB();
 
-describe("Testing search handler with a registered locker", () => {
+describe("Testing search handler", () => {
 
     it("Returns HTTP 200 when the locker exists", async () => {
         const req = {
