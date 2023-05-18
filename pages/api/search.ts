@@ -6,13 +6,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(405).json({ message: "Method not allowed" });
     }
 
-    let building: number;
-    let number: number;
+    const building = parseInt(req.query.building as string);
+    const number = parseInt(req.query.number as string);
 
-    try {
-        building = parseInt(req.query.building as string);
-        number = parseInt(req.query.number as string);
-    } catch (error) {
+    if (isNaN(building) || isNaN(number)) {
         return res.status(400).json({ message: "Invalid query" });
     }
 
