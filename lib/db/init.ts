@@ -3,12 +3,15 @@ import {ELW_COUNT, ECS_COUNT, ELW_ID, ECS_ID} from "../locker_constants";
 import * as fs from "fs";
 
 export function initDB() {
-    // clear the database
-
-    db.prepare("DROP TABLE lockers").run();
-    db.prepare("DROP TABLE buildings").run();
-    db.prepare("DROP TABLE users").run();
-    db.prepare("DROP TABLE registrations").run();
+    // clear the database if it exists
+    try {
+        db.prepare("DROP TABLE lockers").run();
+        db.prepare("DROP TABLE buildings").run();
+        db.prepare("DROP TABLE users").run();
+        db.prepare("DROP TABLE registrations").run();
+    } catch (e) {
+        // do nothing
+    }
 
     const schema = fs.readFileSync("schema.sql", "utf8");
     db.exec(schema);
