@@ -33,6 +33,9 @@ export default function Navbar() {
       <a href="/report" className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded">
         Report
       </a>
+      <a href="/admin" className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded">
+        Admin
+      </a>
       <button onClick={initDB} className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded">
         Init DB
       </button>
