@@ -9,6 +9,13 @@ type ReportedLocker = {
   email: string,
   reported_at: Date,
 }
+async function initDB() {
+  try {
+    const response = await fetch('/api/admin/init');
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 function Counts() {
   const available = 0;
@@ -71,6 +78,10 @@ export default function Admin() {
           Download CSV
         </a>
       </div>
+
+      <button onClick={initDB} className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded">
+        Reset Database
+      </button>
     </div>
   );
 }
