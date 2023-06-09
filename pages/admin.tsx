@@ -6,6 +6,13 @@ import { ReportedLocker } from "../lib/types";
 async function initDB() {
 
 }
+async function initDB() {
+  try {
+    const response = await fetch('/api/admin/init');
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 function Counts() {
   const available = 0;
