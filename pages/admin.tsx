@@ -10,11 +10,7 @@ type ReportedLocker = {
   reported_at: Date,
 }
 async function initDB() {
-  try {
-    const response = await fetch('/api/admin/init');
-  } catch (error) {
-    console.error(error);
-  }
+
 }
 
 function Counts() {
