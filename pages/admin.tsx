@@ -2,10 +2,6 @@ import Head from "next/head";
 import { ECS_ID, ELW_ID } from "../lib/locker_constants";
 import { stripHtml } from "string-strip-html";
 import { ReportedLocker } from "../lib/types";
-
-async function initDB() {
-
-}
 async function initDB() {
 
 }
