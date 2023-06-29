@@ -1,6 +1,12 @@
 import { initDB } from "../../db/init";
-import { getLockers, getUsers, getRegistrations, deregisterAll } from "./admin";
-import { register, deregister } from "../users/user";
+import { getLockers, getUsers, getRegistrations, deregisterAll, getReportedLockers } from "./admin";
+import { register, deregister, report } from "../users/user";
+import { ECS_ID, ELW_ID } from "../../locker_constants";
+import exp from "constants";
+
+beforeEach(() => {
+    initDB();
+});
 
 describe("Testing Admin Controller in different scenarios after filling database with lockers", () => { //Will rename this later
     it("fills the biuldings and users tables and return a truthy value ", () => {
@@ -40,21 +46,33 @@ describe("Testing Admin Controller in different scenarios after filling database
             }
 
             const user_list = getUsers();
-            expect(user_list).toHaveLength(27);
+            expect(user_list).toHaveLength(26);
           });
     })
 
     describe("Testing getregistrations with multiple users ", () => {
         it("Returns all the registrations in the database", () => {
+            for (let i = 65; i <= 90; i++) {
+                let name = String.fromCharCode(i)
+                let email = String.fromCharCode(i) + "@example.ca"
+                register(ECS_ID, i, name, email, false);
+            }
+
             const registration_list = getRegistrations();
-            expect(registration_list).toHaveLength(27);
+            expect(registration_list).toHaveLength(26);
           });
     })
 
     describe("Testing deregisterall with multiple suers", () => {
         it("Returns number of deregistered lockers", () => {
+            for (let i = 65; i <= 90; i++) {
+                let name = String.fromCharCode(i)
+                let email = String.fromCharCode(i) + "@example.ca"
+                register(ECS_ID, i, name, email, false);
+            }
+
             const deregistered_list = deregisterAll();
-            expect(deregistered_list).toBe(27);
+            expect(deregistered_list).toBe(26);
           });
     })
 
@@ -72,4 +90,37 @@ describe("Testing Admin Controller in different scenarios after filling database
           });
     })
 
-})
+    test("getReportedLockers returns empty list when there are no registrations", () => {
+        expect(getReportedLockers()).toHaveLength(0);
+    });
+
+    test("getReportedLockers returns empty list when there are no reported lockers", () => {
+        for (let i = 65; i <= 90; i++) {
+            let name = String.fromCharCode(i)
+            let email = String.fromCharCode(i) + "@example.ca"
+            register(ECS_ID, i, name, email, false);
+        }
+
+        expect(getReportedLockers()).toHaveLength(0);
+    });
+
+    test("getReportedLockers returns reported lockers", () => {
+        register(ECS_ID, 1, "John Doe", "johnd@email.com", false);
+        report(ECS_ID, 1);
+        expect(getReportedLockers()).toHaveLength(1);
+        expect(getReportedLockers()[0].building_id).toBe(ECS_ID);
+        expect(getReportedLockers()[0].num).toBe(1);
+        expect(getReportedLockers()[0].name).toBe("John Doe");
+        expect(getReportedLockers()[0].email).toBe("johnd@email.com");
+        expect(getReportedLockers()[0].reported_at).toBeInstanceOf(Date);
+    });
+
+    test("getReportedLockers returns reported lockers in order of report", () => {
+        register(ECS_ID, 1, "John Doe", "johnd@email.com", false);
+        report(ECS_ID, 1);
+        register(ECS_ID, 2, "Jane Doe", "janed@email.com", false);
+        report(ECS_ID, 2);
+        expect(getReportedLockers()).toHaveLength(2);
+        expect(getReportedLockers()[0].name).toBe("Jane Doe");
+    });
+});
