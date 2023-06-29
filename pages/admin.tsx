@@ -1,14 +1,8 @@
 import Head from "next/head";
 import { ECS_ID, ELW_ID } from "../lib/locker_constants";
 import { stripHtml } from "string-strip-html";
+import { ReportedLocker } from "../lib/types";
 
-type ReportedLocker = {
-  building: number,
-  number: number,
-  name: string,
-  email: string,
-  reported_at: Date,
-}
 async function initDB() {
 
 }
@@ -24,8 +18,8 @@ function Counts() {
 function LockerRow(locker: ReportedLocker) {
   return (
     <tr>
-      <td className="px-1 border border-collapse">{locker.building == ECS_ID ? "ECS" : "ELW"}</td>
-      <td className="px-1 border border-collapse">{locker.number}</td>
+      <td className="px-1 border border-collapse">{locker.building_id == ECS_ID ? "ECS" : "ELW"}</td>
+      <td className="px-1 border border-collapse">{locker.num}</td>
       <td className="px-1 border border-collapse">{stripHtml(locker.name).result}</td>
       <td className="px-1 border border-collapse">{stripHtml(locker.email).result}</td>
       <td className="px-1 border border-collapse">{new Intl.DateTimeFormat('en-US').format(locker.reported_at)}</td>
@@ -34,9 +28,9 @@ function LockerRow(locker: ReportedLocker) {
 }
 
 function ReportedLockers() {
-  const reportedLockers = [ // TODO: replace with actual data from database
-    { building: ECS_ID, number: 1, name: "John Doe", email: "johndoe@domain.com", reported_at: new Date("2021-01-01") },
-    { building: ELW_ID, number: 2, name: "Jane Doe", email: "janedoe@domain.com", reported_at: new Date("2021-01-02") },
+  const reportedLockers: ReportedLocker[] = [ // TODO: replace with actual data from database
+    { building_id: ECS_ID, num: 1, name: "John Doe", email: "johndoe@domain.com", reported_at: new Date("2021-01-01") },
+    { building_id: ELW_ID, num: 2, name: "Jane Doe", email: "janedoe@domain.com", reported_at: new Date("2021-01-02") },
   ];
 
   const lockerRows = reportedLockers.map((locker) => LockerRow(locker));

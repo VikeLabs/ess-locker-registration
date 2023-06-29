@@ -1,4 +1,6 @@
+import { stat } from "fs";
 import { db} from "../../db";
+import { ReportedLocker } from "../../types";
 
 export function getLockers() {
     return db.prepare("SELECT * FROM lockers").all()
@@ -10,6 +12,19 @@ export function getUsers() {
 
 export function getRegistrations() {
     return db.prepare("SELECT * FROM registrations").all()
+}
+
+export function getReportedLockers(): ReportedLocker[] {
+    const statement = `SELECT registrations.building_id, registrations.num, users.name, users.email, registrations.reported_at
+            FROM registrations
+            INNER JOIN users ON registrations.user_id = users.id
+            WHERE reported_at NOT NULL
+            ORDER BY reported_at DESC`;
+    let reportedLockers = db.prepare(statement).all();
+    for (let i = 0; i < reportedLockers.length; i++) {
+        reportedLockers[i].reported_at = new Date(reportedLockers[i].reported_at);
+    }
+    return reportedLockers;
 }
 
 export function deregisterAll(){
