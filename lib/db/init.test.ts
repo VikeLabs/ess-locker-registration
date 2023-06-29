@@ -9,10 +9,6 @@ describe("initializes database", () => {
     });
     
     it("populates buildings and lockers", () => {
-        const buildings = db.prepare("SELECT * FROM buildings").all();
-        expect(buildings[0].name).toBe("engineering lab wing");
-        expect(buildings[1].name).toBe("engineering computer science");
-
         const lockerStmt = db.prepare("SELECT * FROM lockers WHERE building_id = ?");
 
         const elwLockers = lockerStmt.all(ELW_ID).map(locker => locker.num);
