@@ -12,3 +12,8 @@ export type ReportedLocker = {
     email: string,
     reported_at: Date
 }
+
+export type LockerCounts = {
+    total: number,
+    available: number
+}
