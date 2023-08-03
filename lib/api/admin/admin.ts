@@ -1,6 +1,7 @@
 import { stat } from "fs";
 import { db} from "../../db";
-import { ReportedLocker } from "../../types";
+import { LockerCounts, ReportedLocker } from "../../types";
+import { ECS_COUNT, ELW_COUNT } from "../../locker_constants";
 
 export function getLockers() {
     return db.prepare("SELECT * FROM lockers").all()
@@ -52,3 +53,13 @@ export function resolve(building: number, number: number): boolean {
         return false
     }
 }
+
+export function getLockerCounts(): LockerCounts {
+    const numRegistrations = db.prepare("SELECT COUNT(*) FROM registrations").get()["COUNT(*)"];
+
+    return {
+        total: ECS_COUNT + ELW_COUNT,
+        available: ECS_COUNT + ELW_COUNT - numRegistrations
+    }
+}
+
