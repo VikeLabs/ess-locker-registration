@@ -1,8 +1,8 @@
 import { initDB } from "../../db/init";
 import clearUsersAndRegistrations from "../../db/clearUsersAndRegistrations";
-import { getLockers, getUsers, getRegistrations, deregisterAll, resolve, getReportedLockers } from "./admin";
+import { getLockers, getUsers, getRegistrations, deregisterAll, resolve, getReportedLockers, getLockerCounts } from "./admin";
 import { register, deregister, report } from "../users/user";
-import { ECS_ID, ELW_ID } from "../../locker_constants";
+import { ECS_COUNT, ECS_ID, ELW_COUNT, ELW_ID } from "../../locker_constants";
 import { ReportedLocker } from "../../types";
 import { clear } from "console";
 
@@ -181,5 +181,20 @@ describe("Testing Admin Controller in different scenarios after filling database
         const reportedLockers = getReportedLockers();
         expect(reportedLockers).toHaveLength(2);
         expect(reportedLockers[0].name).toBe("Jane Doe");
+    });
+
+    test("getLockerCounts when there are no registrations", () => {
+        const counts = getLockerCounts();
+        expect(counts.total).toBe(ELW_COUNT + ECS_COUNT);
+        expect(counts.available).toBe(ELW_COUNT + ECS_COUNT);
+    });
+
+    test("getLockerCounts when there are registrations", () => {
+        register(ECS_ID, 1, "John Doe", "hello", false);
+        register(ELW_ID, 2, "Jane Doe", "hello", false);
+        const counts = getLockerCounts();
+
+        expect(counts.total).toBe(ELW_COUNT + ECS_COUNT);
+        expect(counts.available).toBe(ELW_COUNT + ECS_COUNT - 2);
     });
 });
