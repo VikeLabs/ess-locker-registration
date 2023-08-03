@@ -22,8 +22,8 @@ export function getReportedLockers(): ReportedLocker[] {
     const statement = `SELECT registrations.building_id, registrations.num, users.name, users.email, registrations.reported_at
             FROM registrations
             INNER JOIN users ON registrations.user_id = users.id
-            WHERE reported_at NOT NULL
-            ORDER BY reported_at DESC`;
+            WHERE registrations.reported_at NOT NULL
+            ORDER BY registrations.reported_at DESC`;
     let reportedLockers = db.prepare(statement).all();
     for (let i = 0; i < reportedLockers.length; i++) {
         reportedLockers[i].reported_at = new Date(reportedLockers[i].reported_at);
