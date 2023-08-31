@@ -1,7 +1,17 @@
 import Head from 'next/head';
-import { ELW_ID, ECS_ID } from '../lib/locker_constants';
+import { ECS_ID, ELW_ID, ECS_COUNT, ELW_COUNT } from '../lib/locker_constants';
+import validateSearch from '../lib/form_validation/validate_search';
 
 export default function Search() {
+  function onSubmit(event) {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const building = parseInt(data.get('building') as string);
+    const number = parseInt(data.get('number') as string);
+
+    return validateSearch(building, number);
+  }
+
   return (
     <div className='ml-4 py-4 px-2 space-y-2'>
       <Head>
@@ -13,7 +23,7 @@ export default function Search() {
         Select a locker to begin.
       </p>
 
-      <form action="/api/search" className='space-y-3'>
+      <form action="/api/search" onSubmit={onSubmit} className='space-y-3'>
         <div>
           <label htmlFor="buildingDrop">Building:</label>
           <br />
@@ -38,5 +48,5 @@ export default function Search() {
         />
       </form>
     </div>
-  )
+  );
 }
