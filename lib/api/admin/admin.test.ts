@@ -1,6 +1,6 @@
 import { initDB } from "../../db/init";
-import { getLockers, getUsers, getRegistrations, deregisterAll } from "./admin";
-import { register, deregister } from "../users/user";
+import { getLockers, getUsers, getRegistrations, deregisterAll, resolve } from "./admin";
+import { register, deregister, report } from "../users/user";
 
 describe("Testing Admin Controller in different scenarios after filling database with lockers", () => { //Will rename this later
     it("fills the biuldings and users tables and return a truthy value ", () => {
@@ -72,4 +72,32 @@ describe("Testing Admin Controller in different scenarios after filling database
           });
     })
 
+    describe("Testing resolve with a reported locker", () =>{
+        it("Resolves the reported locker and returns true", () => {
+            const registration = register(1, 27, "Amy Higgins", "amy@example.com", false);
+            const reported_locker = report(1, 27);
+            const resolution = resolve(1, 27);
+            
+            expect(resolution).toBe(true);
+        })
+    })
+
+    describe("Testing resolve with a locker that wasn't reported", () =>{
+        it(" Doesn't resolve the locker and returns false", () => {
+            const registration = register(1, 30, "Herald White", "herald@example.com", false);
+            const resolution = resolve(1, 30);
+            
+            expect(resolution).toBe(false);
+        })
+    })
+
+    describe("Testing resolve with a locker that doesn't exist", () =>{
+        it("returns false", () => {
+            const resolution = resolve(1, 6789);
+            
+            expect(resolution).toBe(false);
+        })
+    })
+
 })
+
