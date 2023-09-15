@@ -9,7 +9,13 @@ export default function Search() {
     const building = parseInt(data.get('building') as string);
     const number = parseInt(data.get('number') as string);
 
-    return validateSearch(building, number);
+    const validSearch = validateSearch(building, number);
+
+    if (!validSearch) {
+      alert('Locker does not exist!');
+    }
+
+    return validSearch;
   }
 
   return (
