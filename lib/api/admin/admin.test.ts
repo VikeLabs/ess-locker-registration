@@ -1,10 +1,8 @@
 import { initDB } from "../../db/init";
 import clearUsersAndRegistrations from "../../db/clearUsersAndRegistrations";
 import { getLockers, getUsers, getRegistrations, deregisterAll, resolve, getReportedLockers, getLockerCounts } from "./admin";
-import { register, deregister, report } from "../users/user";
+import { register, report } from "../users/user";
 import { ECS_COUNT, ECS_ID, ELW_COUNT, ELW_ID } from "../../locker_constants";
-import { ReportedLocker } from "../../types";
-import { clear } from "console";
 
 beforeAll(() => {
     initDB();
@@ -23,30 +21,29 @@ describe("Testing Admin Controller in different scenarios after filling database
         it("Returns all lockers in ELW and ECS", () => {
             const lockers_list = getLockers();
             expect(lockers_list).toHaveLength(838);
-          });
+        });
     });
 
     describe("Testing getusers with no users", () => {
         it("Returns all the name and emails of users in the database", () => {
             const user_list = getUsers();
             expect(user_list).toHaveLength(0);
-          });
+        });
     });
 
     describe("Testing getusers with one user", () => {
         it("Returns all the name and emails of users in the database", () => {
-            const registrations = register(1, 2, "Chicken Run", "yumyum@uvic.ca", false);
+            register(1, 2, "Chicken Run", "yumyum@uvic.ca", false);
             const user_list = getUsers();
-            expect(user_list).toHaveLength(1);
-            
-          });
+            expect(user_list).toHaveLength(1); 
+        });
         
         it("Returns the correct name and email of the user in the database", () => {
-            const registrations = register(1, 2, "Chicken Run", "yumyum@uvic.ca", false);
+            register(1, 2, "Chicken Run", "yumyum@uvic.ca", false);
             const user_list = getUsers();
             expect(user_list[0].name).toBe("Chicken Run");
             expect(user_list[0].email).toBe("yumyum@uvic.ca");
-            });
+        });
     });
 
     describe("Testing getusers with multiple users", () => {
@@ -55,12 +52,12 @@ describe("Testing Admin Controller in different scenarios after filling database
             for (let i = 65; i <= 90; i++) {
                 let name = String.fromCharCode(i)
                 let email = String.fromCharCode(i) + "@example.ca"
-                let registrations = register(1, i, name, email, false);
+                register(1, i, name, email, false);
             }
 
             const user_list = getUsers();
             expect(user_list).toHaveLength(26);
-          });
+        });
     });
 
     describe("getRegistrations with one user", () => {
@@ -68,12 +65,13 @@ describe("Testing Admin Controller in different scenarios after filling database
             register(ELW_ID, 100, "Name Name", "email@email.com", false);
             report(ELW_ID, 100)
 
-            expect(getRegistrations()).toHaveLength(1);
-            expect(getRegistrations()[0].building_id).toBe(ELW_ID);
-            expect(getRegistrations()[0].num).toBe(100);
-            expect(getRegistrations()[0].name).toBe("Name Name");
-            expect(getRegistrations()[0].email).toBe("email@email.com");
-            expect(getRegistrations()[0].reported_at).toBeDefined();
+            const registration_list = getRegistrations();
+            expect(registration_list).toHaveLength(1);
+            expect(registration_list[0].building_id).toBe(ELW_ID);
+            expect(registration_list[0].num).toBe(100);
+            expect(registration_list[0].name).toBe("Name Name");
+            expect(registration_list[0].email).toBe("email@email.com");
+            expect(registration_list[0].reported_at).toBeDefined();
         });
     });
 
@@ -87,7 +85,7 @@ describe("Testing Admin Controller in different scenarios after filling database
 
             const registration_list = getRegistrations();
             expect(registration_list).toHaveLength(26);
-          });
+        });
     });
 
     describe("Testing deregisterall with multiple suers", () => {
@@ -100,27 +98,27 @@ describe("Testing Admin Controller in different scenarios after filling database
 
             const deregistered_list = deregisterAll();
             expect(deregistered_list).toBe(26);
-          });
+        });
     });
 
     describe("Testing getregistrations with no users ", () => {
         it("Returns all the registrations in the database", () => {
             const registration_list = getRegistrations();
             expect(registration_list).toHaveLength(0);
-          });
+        });
     });
 
     describe("Testing deregisterall with no users", () => {
         it("Returns number of deregistered lockers", () => {
             const deregistered_list = deregisterAll();
             expect(deregistered_list).toBe(0);
-          });
+        });
     });
 
     describe("Testing resolve with a reported locker", () =>{
         it("Resolves the reported locker and returns true", () => {
-            const registration = register(1, 27, "Amy Higgins", "amy@example.com", false);
-            const reported_locker = report(1, 27);
+            register(1, 27, "Amy Higgins", "amy@example.com", false);
+            report(1, 27);
             const resolution = resolve(1, 27);
             
             expect(resolution).toBe(true);
@@ -129,7 +127,7 @@ describe("Testing Admin Controller in different scenarios after filling database
 
     describe("Testing resolve with a locker that wasn't reported", () =>{
         it(" Doesn't resolve the locker and returns false", () => {
-            const registration = register(1, 30, "Herald White", "herald@example.com", false);
+            register(1, 30, "Herald White", "herald@example.com", false);
             const resolution = resolve(1, 30);
             
             expect(resolution).toBe(false);
@@ -163,12 +161,12 @@ describe("Testing Admin Controller in different scenarios after filling database
         report(ECS_ID, 1);
 
         const reportedLockers = getReportedLockers();
-        expect(getReportedLockers()).toHaveLength(1);
-        expect(getReportedLockers()[0].building_id).toBe(ECS_ID);
-        expect(getReportedLockers()[0].num).toBe(1);
-        expect(getReportedLockers()[0].name).toBe("John Doe");
-        expect(getReportedLockers()[0].email).toBe("johnd@email.com");
-        expect(getReportedLockers()[0].reported_at).toBeInstanceOf(Date);
+        expect(reportedLockers).toHaveLength(1);
+        expect(reportedLockers[0].building_id).toBe(ECS_ID);
+        expect(reportedLockers[0].num).toBe(1);
+        expect(reportedLockers[0].name).toBe("John Doe");
+        expect(reportedLockers[0].email).toBe("johnd@email.com");
+        expect(reportedLockers[0].reported_at).toBeInstanceOf(Date);
     });
 
     test("getReportedLockers returns the most recently reported lockers first", async () => {
