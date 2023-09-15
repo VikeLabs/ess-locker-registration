@@ -75,6 +75,20 @@ describe("Testing Admin Controller in different scenarios after filling database
         });
     });
 
+    describe("getRegistrations with one user", () => {
+        it("Returns the correct properties of the user", () => {
+            register(ELW_ID, 100, "Name Name", "email@email.com", false);
+            report(ELW_ID, 100)
+
+            expect(getRegistrations()).toHaveLength(1);
+            expect(getRegistrations()[0].building_id).toBe(ELW_ID);
+            expect(getRegistrations()[0].num).toBe(100);
+            expect(getRegistrations()[0].name).toBe("Name Name");
+            expect(getRegistrations()[0].email).toBe("email@email.com");
+            expect(getRegistrations()[0].reported_at).toBeDefined();
+        });
+    })
+
     describe("Testing getregistrations with multiple users ", () => {
         it("Returns all the registrations in the database", () => {
             for (let i = 65; i <= 90; i++) {

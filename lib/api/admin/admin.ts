@@ -36,6 +36,7 @@ export function deregisterAll(){
     return stmt.changes
 }
 
+<<<<<<< HEAD
 export function resolve(building: number, number: number): boolean {
     try{
         const check  = db.prepare("SELECT * FROM registrations WHERE building_id = ? and num = ?").get(building, number)
@@ -54,6 +55,8 @@ export function resolve(building: number, number: number): boolean {
     }
 }
 
+=======
+>>>>>>> 75d52a739105e3c6cccd5afddd30b630db6708b1
 export function getLockerCounts(): LockerCounts {
     const numRegistrations = db.prepare("SELECT COUNT(*) FROM registrations").get()["COUNT(*)"];
 
