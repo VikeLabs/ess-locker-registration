@@ -4,14 +4,15 @@ import { register } from "../../../lib/api/users/user";
 import handler from "./getRegistrations";
 import { ECS_ID, ELW_ID } from "../../../lib/locker_constants";
 
-
 const mockedJson = jest.fn();
 
 const mockedRes = {
     status: jest.fn().mockReturnValue({ json: mockedJson }),
 } as unknown as jest.Mocked<NextApiResponse>;
 
-initDB();
+beforeEach(() => {
+    initDB();
+})
 
 describe("Testing getRegistration handler", () => {
     it("Returns HTTP 200 when it retrieves all registrations in the database", () => {
@@ -39,7 +40,7 @@ describe("Testing getRegistration handler", () => {
 
         handler(req, mockedRes)
 
-        expect(mockedJson).toHaveBeenNthCalledWith(1, [{"building_id": 1, "num": 100, "reported_at": null, "user_id": 1}])
+        expect(mockedJson).toHaveBeenNthCalledWith(1, [{"building_id": ELW_ID, "num": 100, "reported_at": null, "user_id": 1}])
     });
 
 

@@ -10,8 +10,9 @@ const mockedRes = {
     status: jest.fn().mockReturnValue({ json: mockedJson }),
 } as unknown as jest.Mocked<NextApiResponse>;
 
-initDB();
-
+beforeEach(() => {
+    initDB();
+})
 
 describe("Testing resolve handler", () => {
 

@@ -10,7 +10,9 @@ const mockedRes = {
     status: jest.fn().mockReturnValue({ json: mockedJson }),
 } as unknown as jest.Mocked<NextApiResponse>;
 
-initDB();
+beforeEach(() => {
+    initDB();
+})
 
 describe("Testing deregisterAll handler", () => {
     it("Returns HTTP 200 when all deregistrations were successful", () => {

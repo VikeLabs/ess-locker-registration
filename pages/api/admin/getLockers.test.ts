@@ -10,7 +10,9 @@ const mockedRes = {
     status: jest.fn().mockReturnValue({ json: mockedJson }),
 } as unknown as jest.Mocked<NextApiResponse>;
 
-initDB();
+beforeEach(() => {
+    initDB();
+})
 
 describe("Testing getLockers handler", () => {
     it("Returns HTTP 200 when it retrieves all lockers lockers in the database", () => {

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { initDB } from "../../../lib/db/init";
 import { register } from "../../../lib/api/users/user"; 
-import handler from "./getRegistrations";
+import handler from "./getUsers";
 import { ECS_ID, ELW_ID } from "../../../lib/locker_constants";
 
 
@@ -11,7 +11,9 @@ const mockedRes = {
     status: jest.fn().mockReturnValue({ json: mockedJson }),
 } as unknown as jest.Mocked<NextApiResponse>;
 
-initDB();
+beforeEach(() => {
+    initDB();
+})
 
 describe("Testing getUsers handler", () => {
     it("Returns HTTP 200 when it retrieves all registered users in the database", () => {
@@ -28,7 +30,7 @@ describe("Testing getUsers handler", () => {
         expect(mockedRes.status).toHaveBeenCalledWith(200)
     });
 
-    it("Returns 2 users in the database", () => {
+    it("Returns 1 user in the database", () => {
 
         let registrations = register(ELW_ID, 102, "Paul Willow", "pwillow@example.com", false);
 
@@ -39,7 +41,7 @@ describe("Testing getUsers handler", () => {
 
         handler(req, mockedRes)
 
-        expect(mockedJson.mock.calls[1][0]).toHaveLength(2)
+        expect(mockedJson.mock.calls[1][0]).toHaveLength(1)
     });
 
 
