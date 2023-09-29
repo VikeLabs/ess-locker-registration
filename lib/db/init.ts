@@ -5,10 +5,11 @@ import * as fs from "fs";
 export function initDB() {
     // clear the database if it exists
     try {
+        db.prepare("DROP TABLE registrations").run();
         db.prepare("DROP TABLE lockers").run();
         db.prepare("DROP TABLE buildings").run();
         db.prepare("DROP TABLE users").run();
-        db.prepare("DROP TABLE registrations").run();
+        
     } catch (e) {
         // do nothing
     }
