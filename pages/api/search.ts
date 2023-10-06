@@ -19,6 +19,5 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(404).json({ message: "Locker not found" });
     }
 
-    res.status(200).json(registrationInfo);
-    return
+    return res.status(200).json(registrationInfo);
 }
