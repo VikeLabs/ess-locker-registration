@@ -4,3 +4,16 @@ export type registrationInfo = {
     reported_at: Date | null,
     available: boolean
 }
+
+export type ReportedLocker = {
+    building_id: number,
+    num: number,
+    name: string,
+    email: string,
+    reported_at: Date
+}
+
+export type LockerCounts = {
+    total: number,
+    available: number
+}

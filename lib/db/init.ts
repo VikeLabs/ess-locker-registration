@@ -3,27 +3,21 @@ import {ELW_COUNT, ECS_COUNT, ELW_ID, ECS_ID} from "../locker_constants";
 import * as fs from "fs";
 
 export function initDB() {
-    // clear the database if it exists
+    const schema = fs.readFileSync("schema.sql", "utf8");
+    
+    // try to create the tables
     try {
-        db.prepare("DROP TABLE lockers").run();
-        db.prepare("DROP TABLE buildings").run();
-        db.prepare("DROP TABLE users").run();
-        db.prepare("DROP TABLE registrations").run();
+        db.exec(schema);
     } catch (e) {
         // do nothing
     }
 
-    const schema = fs.readFileSync("schema.sql", "utf8");
-    db.exec(schema);
+    db.prepare("DELETE FROM registrations;").run();
+    db.prepare("DELETE FROM lockers;").run();
+    db.prepare("DELETE FROM users;").run();
 
-    // insert the buildings
-
-    const insertBuilding = db.prepare("INSERT INTO buildings (name) VALUES (?)");
-
-    insertBuilding.run("engineering lab wing");
-    insertBuilding.run("engineering computer science");
-
-    // insert the lockers
+    // reset the autoincrement
+    db.prepare("DELETE FROM sqlite_sequence WHERE NAME='lockers'").run();
 
     let insertLockersStmt = "INSERT INTO lockers (building_id, num) VALUES ";
     for (let i = 1; i <= ELW_COUNT; i++) {
