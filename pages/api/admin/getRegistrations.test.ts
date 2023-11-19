@@ -31,7 +31,7 @@ describe("Testing getRegistration handler", () => {
 
     it("Returns 2 registrations in the database", () => {
 
-        let registrations = register(ELW_ID, 101, "Paul Willow", "pwillow@example.com", false);
+        let registrations = register(ECS_ID, 101, "Paul Willow", "pwillow@example.com", false);
 
         const req = {
             method: "GET",
@@ -40,7 +40,7 @@ describe("Testing getRegistration handler", () => {
 
         handler(req, mockedRes)
 
-        expect(mockedJson).toHaveBeenNthCalledWith(1, [{"building_id": ELW_ID, "num": 100, "reported_at": null, "user_id": 1}])
+        expect(mockedJson).toHaveBeenLastCalledWith([{"building_id": ECS_ID, "num": 101, "reported_at": null, "user_id": 1}])
     });
 
 
