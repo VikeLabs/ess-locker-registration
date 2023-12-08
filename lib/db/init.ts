@@ -17,7 +17,7 @@ export function initDB() {
     db.prepare("DELETE FROM users;").run();
 
     // reset the autoincrement
-    db.prepare("DELETE FROM sqlite_sequence WHERE NAME='lockers'").run();
+    db.prepare("DELETE FROM sqlite_sequence WHERE NAME='users'").run();
 
     let insertLockersStmt = "INSERT INTO lockers (building_id, num) VALUES ";
     for (let i = 1; i <= ELW_COUNT; i++) {

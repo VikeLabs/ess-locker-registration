@@ -3,19 +3,20 @@ import { ECS_ID, ELW_ID, ECS_COUNT, ELW_COUNT } from '../lib/locker_constants';
 import validateSearch from '../lib/form_validation/validate_search';
 
 export default function Search() {
-  function onSubmit(event) {
+  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.target);
+    const data = new FormData(event.currentTarget);
     const building = parseInt(data.get('building') as string);
     const number = parseInt(data.get('number') as string);
 
-    const validSearch = validateSearch(building, number);
+    const isValid = validateSearch(building, number);
 
-    if (!validSearch) {
+    if (!isValid) {
       alert('Locker does not exist!');
+      return false;
     }
 
-    return validSearch;
+    return true;
   }
 
   return (
